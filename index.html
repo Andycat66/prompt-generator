@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromptEngine AI | Pro Terminal</title>
+    <title>PromptEngine AI | Pro Industrial Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <script>
@@ -11,136 +11,109 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: { intlOrange: '#FF4F00', spaceBlack: '#0B0C10', steelGrey: '#1F2833' },
-                    fontFamily: { mono: ['JetBrains Mono', 'monospace'], sans: ['Inter', 'sans-serif'] }
+                    colors: {
+                        intlOrange: '#FF4F00',
+                        spaceBlack: '#0B0C10',
+                        steelGrey: '#1F2833',
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0B0C10; color: #cbd5e1; }
-        .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); }
-        .orange-glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.6); }
-        
-        /* Progress Bar Animation */
-        @keyframes scan {
-            0% { width: 0%; left: 0; }
-            50% { width: 100%; left: 0; }
-            100% { width: 0%; left: 100%; }
-        }
-        .scanner-line {
-            height: 2px;
-            background: #FF4F00;
-            box-shadow: 0 0 10px #FF4F00;
-            position: relative;
-            animation: scan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
+        body { background-color: #0B0C10; }
+        .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); transition: all 0.3s ease; }
+        .bento-card:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
+        .orange-glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.5); }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-intlOrange selection:text-white">
+<body class="text-slate-300 font-sans antialiased">
 
     <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
         <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
-            <span class="font-mono font-bold tracking-tighter text-white text-xl uppercase">Prompt<span class="text-intlOrange">Engine</span></span>
+            <span class="font-mono font-bold tracking-tighter text-white text-xl">PROMPT<span class="text-intlOrange uppercase">Engine</span></span>
         </div>
-        <div class="text-[10px] font-mono border border-intlOrange/30 px-3 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">Core Online</div>
+        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest">System Status: Active</div>
     </nav>
 
     <main class="container mx-auto px-6 py-12 max-w-4xl">
         
-        <section class="text-center mb-12">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter orange-glow">COMMAND CENTER</h1>
-            <p class="text-slate-500 font-mono text-xs uppercase tracking-[0.3em]">AI Synthesis Engine v4.0</p>
+        <section class="text-center mb-16">
+            <h1 class="text-6xl font-bold text-white mb-4 tracking-tighter orange-glow">COMMAND CENTER</h1>
+            <p class="text-slate-500 font-mono text-sm uppercase tracking-[0.2em]">High-Performance AI Prompt Synthesis</p>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-            <div class="md:col-span-2 bento-card p-8 rounded-2xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-[1px] bg-slate-700"></div>
-                <label class="block font-mono text-[10px] text-intlOrange mb-6 uppercase tracking-widest opacity-70">Primary Input Stream</label>
-                <textarea id="userInput" placeholder="Awaiting parameters..." 
-                    class="w-full bg-transparent text-2xl text-white outline-none resize-none h-40 placeholder:text-slate-800 font-bold leading-tight"></textarea>
-                
-                <div class="mt-6 flex justify-between items-center">
-                    <span class="text-[10px] font-mono text-slate-600">UTF-8 // EN-US</span>
-                    <button onclick="startSynthesis()" id="genBtn"
-                        class="bg-intlOrange text-spaceBlack font-bold px-10 py-4 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-intlOrange/20">
+            <div class="md:col-span-2 bento-card p-8 rounded-3xl">
+                <label class="block font-mono text-xs text-intlOrange mb-4 uppercase tracking-widest">User Input Source</label>
+                <textarea id="userInput" placeholder="Initialize task parameters..." 
+                    class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-700 font-bold"></textarea>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="generatePrompt()" 
+                        class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">
                         SYNTHESIZE
                     </button>
                 </div>
             </div>
 
-            <div class="bento-card p-6 rounded-2xl flex flex-col gap-4">
-                <span class="font-mono text-[10px] text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2">Macro Presets</span>
-                <button onclick="setInput('Technical Architecture')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-intlOrange/10 hover:text-intlOrange transition-all text-xs border border-slate-800 font-mono italic">/technical_env</button>
-                <button onclick="setInput('Marketing Persona')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-intlOrange/10 hover:text-intlOrange transition-all text-xs border border-slate-800 font-mono italic">/market_growth</button>
-                <button onclick="setInput('Code Optimization')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-intlOrange/10 hover:text-intlOrange transition-all text-xs border border-slate-800 font-mono italic">/refactor_main</button>
-            </div>
-
-            <div id="loadingArea" class="hidden md:col-span-3 py-10">
-                <div class="scanner-line"></div>
-                <p class="text-center font-mono text-intlOrange text-[10px] mt-4 tracking-widest uppercase animate-pulse">Synthesizing Neural Context...</p>
-            </div>
-
-            <div id="resultContainer" class="hidden md:col-span-3 bento-card p-10 rounded-2xl bg-black/60 relative border-2 border-intlOrange/20">
-                <div class="flex justify-between items-center mb-8 border-b border-slate-800 pb-4">
-                    <h3 class="font-mono text-intlOrange text-xs font-bold tracking-widest">ENCRYPTED_PROMPT_DATA</h3>
-                    <button onclick="copyPrompt()" id="copyBtn" class="text-[10px] font-mono bg-white/5 hover:bg-intlOrange hover:text-black border border-white/10 px-4 py-2 rounded transition-all">COPY_CMD</button>
+            <div class="bento-card p-6 rounded-3xl flex flex-col justify-between">
+                <span class="font-mono text-[10px] text-slate-500 uppercase">Presets</span>
+                <div class="space-y-2 mt-4">
+                    <button onclick="setInput('Write an technical analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">TECHNICAL</button>
+                    <button onclick="setInput('Draft a persuasive marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">MARKETING</button>
+                    <button onclick="setInput('Code a clean React component for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">SCRIPTING</button>
                 </div>
-                <div id="output" class="text-white font-mono text-sm md:text-base leading-relaxed whitespace-pre-wrap min-h-[100px]"></div>
+            </div>
+
+            <div id="resultContainer" class="hidden md:col-span-3 bento-card p-8 rounded-3xl border-l-4 border-l-intlOrange bg-black/40">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-mono text-intlOrange font-bold italic tracking-widest">OUTPUT_RESULT.TXT</h3>
+                    <button onclick="copyPrompt()" id="copyBtn" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md text-white transition">COPY_OUTPUT</button>
+                </div>
+                <pre id="output" class="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap"></pre>
             </div>
         </div>
+
+        <footer class="mt-20 border-t border-slate-800 pt-12 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="font-bold text-white mb-4">Prompt Engineering 101</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">This tool leverages the <strong>Role-Action-Context</strong> framework. By defining a specific persona and constraints, you reduce AI hallucinations and increase output accuracy by up to 40%.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Why International Orange?</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Used for visibility in extreme environments. We believe your prompts should be just as clear and impossible to miss. Optimized for 2026 performance standards.</p>
+                </div>
+            </div>
+        </footer>
     </main>
 
     <script>
         function setInput(val) { document.getElementById('userInput').value = val; }
 
-        function startSynthesis() {
+        function generatePrompt() {
             const input = document.getElementById('userInput').value;
-            if(!input) return alert("INPUT_EMPTY: Parameters required.");
+            if(!input) return alert("System requires input parameters.");
+            
+            const megaPrompt = `[IDENTITY]: Senior Expert & Consultant\n[TASK]: ${input}\n[CONSTRAINTS]: 1. No fluff. 2. High-density information. 3. Structured markdown headers.\n[GOAL]: Maximum actionable utility.`;
 
-            // Hide old results, show loader
-            document.getElementById('resultContainer').classList.add('hidden');
-            document.getElementById('loadingArea').classList.remove('hidden');
-            document.getElementById('genBtn').disabled = true;
-
-            // Artificial delay for "feel"
-            setTimeout(() => {
-                document.getElementById('loadingArea').classList.add('hidden');
-                document.getElementById('resultContainer').classList.remove('hidden');
-                document.getElementById('genBtn').disabled = false;
-                
-                const finalPrompt = `[IDENTITY]: Elite Consultant & Specialist\n[CONTEXT]: ${input}\n[TASK]: Provide an exhaustive, multi-layered breakdown.\n[OUTPUT]: Industrial-grade Markdown. No conversational filler. High impact.`;
-                
-                typeWriterEffect(finalPrompt);
-            }, 1800);
-        }
-
-        function typeWriterEffect(text) {
-            const outputElement = document.getElementById('output');
-            outputElement.innerHTML = "";
-            let i = 0;
-            function type() {
-                if (i < text.length) {
-                    outputElement.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, 15); // Speed of typing
-                }
-            }
-            type();
+            document.getElementById('output').innerText = megaPrompt;
+            document.getElementById('resultContainer').classList.remove('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         function copyPrompt() {
             const text = document.getElementById('output').innerText;
             navigator.clipboard.writeText(text);
             const btn = document.getElementById('copyBtn');
-            btn.innerText = "✓_COPIED";
-            btn.classList.add('bg-intlOrange', 'text-black');
-            setTimeout(() => { 
-                btn.innerText = "COPY_CMD"; 
-                btn.classList.remove('bg-intlOrange', 'text-black');
-            }, 2000);
+            btn.innerText = "✓ COPIED_TO_CLIPBOARD";
+            setTimeout(() => { btn.innerText = "COPY_OUTPUT"; }, 2000);
         }
     </script>
 </body>
