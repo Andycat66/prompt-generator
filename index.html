@@ -1,86 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROMPT ENGINE | COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0B0C10; color: #94a3b8; font-family: 'JetBrains Mono', monospace; scroll-behavior: smooth; }
-        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); border-radius: 1.5rem; transition: 0.3s; }
-        .bento:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
+        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; scroll-behavior: smooth; }
+        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); border-radius: 1.5rem; }
         .glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.5); }
         @keyframes scan { 0% { left: -40%; } 100% { left: 100%; } }
-        .scanner { position: absolute; height: 2px; width: 40%; background: #FF4F00; box-shadow: 0 0 15px #FF4F00; animation: scan 2s infinite linear; }
+        .scanner { position: absolute; height: 2px; width: 40%; background: #FF4F00; animation: scan 2s infinite linear; }
     </style>
 </head>
 <body class="p-4 md:p-12 min-h-screen" onload="loadHistory()">
 
-    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-16">
+    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-12">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-[#FF4F00] rounded flex items-center justify-center text-black font-bold text-xl">P</div>
-            <span class="text-white font-bold tracking-tighter text-2xl uppercase">PROMPT<span class="text-[#FF4F00]">ENGINE</span></span>
+            <span class="text-white font-bold text-2xl uppercase">PROMPT<span class="text-[#FF4F00]">ENGINE</span></span>
         </div>
-        <div class="text-[10px] border border-orange-500/30 px-3 py-1 rounded text-[#FF4F00] uppercase tracking-[0.2em] animate-pulse">System Active</div>
+        <div class="text-[10px] border border-orange-500/30 px-3 py-1 rounded text-[#FF4F00] animate-pulse">SYSTEM: ACTIVE</div>
     </nav>
 
-    <main class="max-w-4xl mx-auto mb-20">
+    <main class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter glow uppercase">Command Center</h1>
-            <p class="text-slate-500 text-xs uppercase tracking-[0.4em]">Industrial Synthesis Engine v4.0.5</p>
+            <h1 class="text-5xl font-bold text-white mb-4 glow uppercase">Command Center</h1>
+            <p class="text-slate-500 text-xs tracking-[0.4em]">v4.0.7 | INDUSTRIAL SYNTHESIS</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bento p-8 relative overflow-hidden shadow-2xl">
-                <textarea id="ui" placeholder="Initialize parameters..." class="w-full bg-transparent text-white text-2xl font-bold outline-none h-40 resize-none placeholder:text-slate-800"></textarea>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="md:col-span-2 bento p-8 shadow-2xl">
+                <textarea id="ui" placeholder="Initialize task..." class="w-full bg-transparent text-white text-2xl font-bold outline-none h-40 resize-none"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="run()" class="bg-[#FF4F00] text-black font-bold px-10 py-3 rounded-full hover:brightness-110 active:scale-95 transition-all uppercase text-sm">Synthesize</button>
+                    <button onclick="run()" class="bg-[#FF4F00] text-black font-bold px-10 py-3 rounded-full hover:scale-105 transition uppercase text-sm">Synthesize</button>
                 </div>
             </div>
 
             <div class="bento p-6 flex flex-col justify-between">
-                <span class="text-[10px] text-slate-500 uppercase tracking-widest">System Macros</span>
+                <span class="text-[10px] text-slate-500 uppercase">Macros</span>
                 <div class="space-y-3">
-                    <button onclick="set('Technical analysis of...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Technical</button>
-                    <button onclick="set('Marketing strategy for...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Marketing</button>
-                    <button onclick="set('Python optimization for...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Scripting</button>
+                    <button onclick="set('Tech Analysis: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Technical</button>
+                    <button onclick="set('Marketing: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Marketing</button>
+                    <button onclick="set('Strategy: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Logic</button>
                 </div>
             </div>
 
-            <div id="ld" class="hidden md:col-span-3 py-8 relative">
-                <div class="h-[1px] bg-slate-800 w-full relative overflow-hidden">
-                    <div class="scanner"></div>
-                </div>
-            </div>
+            <div id="ld" class="hidden md:col-span-3 py-4 relative"><div class="h-[1px] bg-slate-800 w-full overflow-hidden relative"><div class="scanner"></div></div></div>
 
-            <div id="rc" class="hidden md:col-span-3 bento p-8 border-l-4 border-l-[#FF4F00] bg-black/40">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-[#FF4F00] text-[10px] uppercase tracking-widest font-bold">Encrypted_Output.log</span>
-                    <button onclick="copy()" id="cb" class="text-[10px] border border-white/10 px-4 py-1 rounded hover:bg-white/5 transition">COPY_DATA</button>
+            <div id="rc" class="hidden md:col-span-3 bento p-8 border-l-4 border-l-[#FF4F00]">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[#FF4F00] text-[10px] font-bold uppercase">Synthesis_Output.log</span>
+                    <button onclick="copy()" id="cb" class="text-[10px] border border-white/10 px-4 py-1 rounded hover:bg-white/5">COPY_DATA</button>
                 </div>
-                <pre id="out" class="text-white text-sm leading-relaxed whitespace-pre-wrap"></pre>
+                <pre id="out" class="text-white text-sm whitespace-pre-wrap"></pre>
             </div>
-            
-            <div id="hist" class="md:col-span-3 mt-10 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
-    </main>
 
-    <section class="max-w-4xl mx-auto px-6 pb-20 border-t border-slate-900 pt-16">
-        <div class="flex items-center gap-4 mb-10">
-            <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Operation Manual</h2>
-            <div class="h-[1px] flex-grow bg-slate-800"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 pt-10 border-t border-slate-900">
+            <div class="bento p-6 border-slate-800 opacity-80">
+                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">01.</h3>
+                <p class="text-white font-bold text-[10px] uppercase mb-1">Initialize</p>
+                <p class="text-slate-500 text-[10px]">Enter your task or project idea into the primary source.</p>
+            </div>
+            <div class="bento p-6 border-slate-800 opacity-80">
+                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">02.</h3>
+                <p class="text-white font-bold text-[10px] uppercase mb-1">Synthesize</p>
+                <p class="text-slate-500 text-[10px]">The engine wraps your input in a professional AI framework.</p>
+            </div>
+            <div class="bento p-6 border-slate-800 opacity-80">
+                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">03.</h3>
+                <p class="text-white font-bold text-[10px] uppercase mb-1">Execute</p>
+                <p class="text-slate-500 text-[10px]">Copy the result and paste into your LLM of choice.</p>
+            </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <div class="bento p-6 border-slate-800"><div class="text-[#FF4F00] font-bold mb-3 font-mono text-2xl">01.</div><h3 class="text-white font-bold mb-2 uppercase text-[10px] tracking-widest">Input</h3><p class="text-slate-500 text-[11px] leading-relaxed">Enter your raw idea into the command source.</p></div>
-            <div class="bento p-6 border-slate-800"><div class="text-[#FF4F00] font-bold mb-3 font-mono text-2xl">02.</div><h3 class="text-white font-bold mb-2 uppercase text-[10px] tracking-widest">Process</h3><p class="text-slate-500 text-[11px] leading-relaxed">The engine synthesizes a high-density AI framework.</p></div>
-            <div class="bento p-6 border-slate-800"><div class="text-[#FF4F00] font-bold mb-3 font-mono text-2xl">03.</div><h3 class="text-white font-bold mb-2 uppercase text-[10px] tracking-widest">Deploy</h3><p class="text-slate-500 text-[11px] leading-relaxed">Copy the log and paste into ChatGPT or Claude.</p></div>
+
+        <div class="mb-20">
+            <h2 class="text-white font-bold text-[10px] uppercase tracking-widest mb-6">Session Logs</h2>
+            <div id="hist" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
-        <footer class="text-center opacity-60">
-            <p class="text-slate-600 font-mono text-[9px] uppercase tracking-[0.4em] mb-4">ChatGPT Marketing • AI Coding Tools • Strategy Synthesis</p>
-            <p class="text-slate-800 text-[8px] uppercase tracking-widest">© 2026 Industrial Systems | PromptEngine v4.0.5</p>
+
+        <footer class="text-center pb-20 opacity-30">
+            <p class="text-[9px] uppercase tracking-widest">ChatGPT Strategy • AI Prompt Tool • Professional Synthesis</p>
+            <p class="text-[8px] mt-2">© 2026 INDUSTRIAL SYSTEMS</p>
         </footer>
-    </section>
+    </main>
 
     <script>
         function set(v) { document.getElementById('ui').value = v; }
@@ -96,7 +100,7 @@
                 document.getElementById('out').innerText = res;
                 save(val, res);
                 window.scrollTo({ top: document.getElementById('rc').offsetTop - 50, behavior: 'smooth' });
-            }, 1200);
+            }, 1000);
         }
         function save(q, p) {
             let logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
@@ -108,16 +112,4 @@
             const h = document.getElementById('hist');
             const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
             if (logs.length === 0) {
-                h.innerHTML = `<div class="md:col-span-3 py-10 border border-dashed border-slate-800 rounded-2xl flex items-center justify-center opacity-50"><p class="text-[10px] font-mono text-slate-700 uppercase tracking-[0.5em] animate-pulse">[ WAITING FOR INPUT ]</p></div>`;
-                return;
-            }
-            h.innerHTML = logs.map(l => `<div class="bento p-4 cursor-pointer hover:bg-slate-800 group" onclick="set('${l.q}')"><p class="text-[9px] text-[#FF4F00] uppercase mb-1">LOG: ${new Date(l.id).toLocaleTimeString()}</p><p class="text-white text-xs font-bold truncate group-hover:text-[#FF4F00] transition-colors">${l.q}</p></div>`).join('');
-        }
-        function copy() {
-            navigator.clipboard.writeText(document.getElementById('out').innerText);
-            document.getElementById('cb').innerText = "DONE_✓";
-            setTimeout(() => { document.getElementById('cb').innerText = "COPY_DATA"; }, 2000);
-        }
-    </script>
-</body>
-</html>
+                h.innerHTML = `<p class="text-[10px] text-slate-800 uppercase">[ LOG_EMPTY ]</
