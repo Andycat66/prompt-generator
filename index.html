@@ -1,196 +1,36 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromptEngine AI | Pro Terminal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        intlOrange: '#FF4F00',
-                        spaceBlack: '#0B0C10',
-                        steelGrey: '#1F2833',
-                    },
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'monospace'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #0B0C10; scroll-behavior: smooth; }
-        .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); transition: all 0.3s ease; }
-        .bento-card:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
-        .orange-glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.5); }
-        
-        /* High-Tech Scanner Animation */
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .scanner-bar {
-            height: 2px;
-            background: #FF4F00;
-            width: 30%;
-            position: absolute;
-            box-shadow: 0 0 15px #FF4F00;
-            animation: scan 1.5s infinite linear;
-        }
-    </style>
-</head>
-<body class="text-slate-300 font-sans antialiased" onload="loadHistory()">
+<section class="max-w-4xl mx-auto px-6 pb-20">
+    <div class="flex items-center gap-4 mb-8">
+        <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Operation Manual</h2>
+        <div class="h-[1px] flex-grow bg-slate-800"></div>
+    </div>
 
-    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
-            <span class="font-mono font-bold tracking-tighter text-white text-xl uppercase">PROMPT<span class="text-intlOrange">Engine</span></span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bento p-6 border-slate-800">
+            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">01.</div>
+            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Initialize</h3>
+            <p class="text-slate-500 text-xs leading-relaxed">Enter your raw idea or task into the Primary Input. Be as specific as possible regarding your goals.</p>
         </div>
-        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">System Status: Active</div>
-    </nav>
 
-    <main class="container mx-auto px-6 py-12 max-w-4xl">
-        
-        <section class="text-center mb-16">
-            <h1 class="text-6xl font-bold text-white mb-4 tracking-tighter orange-glow uppercase">Command Center</h1>
-            <p class="text-slate-500 font-mono text-sm uppercase tracking-[0.2em]">High-Performance AI Synthesis</p>
-        </section>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            <div class="md:col-span-2 bento-card p-8 rounded-3xl">
-                <label class="block font-mono text-xs text-intlOrange mb-4 uppercase tracking-widest">User Input Source</label>
-                <textarea id="userInput" placeholder="Initialize task parameters..." 
-                    class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-800 font-bold"></textarea>
-                <div class="mt-4 flex justify-end">
-                    <button onclick="startSynthesis()" id="genBtn"
-                        class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">
-                        SYNTHESIZE
-                    </button>
-                </div>
-            </div>
-
-            <div class="bento-card p-6 rounded-3xl flex flex-col justify-between">
-                <span class="font-mono text-[10px] text-slate-500 uppercase tracking-widest">Macros</span>
-                <div class="space-y-2 mt-4">
-                    <button onclick="setInput('Technical deep-dive analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Technical</button>
-                    <button onclick="setInput('Viral marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Marketing</button>
-                    <button onclick="setInput('Code optimization strategy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Scripting</button>
-                </div>
-            </div>
-
-            <div id="loader" class="hidden md:col-span-3 py-10 relative overflow-hidden">
-                <div class="h-[1px] w-full bg-slate-800"></div>
-                <div class="scanner-bar"></div>
-                <p class="text-center font-mono text-intlOrange text-[10px] mt-4 tracking-widest uppercase">Synthesizing Neural Context...</p>
-            </div>
-
-            <div id="resultContainer" class="hidden md:col-span-3 bento-card p-8 rounded-3xl border-l-4 border-l-intlOrange bg-black/40">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-mono text-intlOrange font-bold italic tracking-widest text-xs uppercase">Output_Result.txt</h3>
-                    <button onclick="copyPrompt()" id="copyBtn" class="text-[10px] bg-white/10 hover:bg-intlOrange hover:text-black px-4 py-2 rounded font-mono transition">COPY_DATA</button>
-                </div>
-                <pre id="output" class="text-white font-mono text-sm leading-relaxed whitespace-pre-wrap"></pre>
-            </div>
-
-            <div class="md:col-span-3 mt-12">
-                <div class="flex items-center gap-4 mb-6">
-                    <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Session Logs</h2>
-                    <div class="h-[1px] flex-grow bg-slate-800"></div>
-                </div>
-                <div id="historyLog" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    </div>
-            </div>
+        <div class="bento p-6 border-slate-800">
+            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">02.</div>
+            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Synthesize</h3>
+            <p class="text-slate-500 text-xs leading-relaxed">Click 'Synthesize' to run the neural engine. The system will wrap your input in a high-performance expert framework.</p>
         </div>
-    </main>
 
-    <script>
-        function setInput(val) { document.getElementById('userInput').value = val; }
+        <div class="bento p-6 border-slate-800">
+            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">03.</div>
+            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Execute</h3>
+            <p class="text-slate-500 text-xs leading-relaxed">Copy the generated "Mega-Prompt" and paste it into ChatGPT, Claude, or Gemini for a 40% more accurate response.</p>
+        </div>
+    </div>
 
-        function startSynthesis() {
-            const input = document.getElementById('userInput').value;
-            if(!input) return alert("System requires input parameters.");
-            
-            const loader = document.getElementById('loader');
-            const resultBox = document.getElementById('resultContainer');
-            const output = document.getElementById('output');
-            const btn = document.getElementById('genBtn');
-
-            btn.disabled = true;
-            resultBox.classList.add('hidden');
-            loader.classList.remove('hidden');
-
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                resultBox.classList.remove('hidden');
-                btn.disabled = false;
-
-                const finalPrompt = `[IDENTITY]: Senior Analyst\n[CONTEXT]: ${input}\n[TASK]: Detailed Professional Breakdown\n[FORMAT]: Industrial Markdown Structure.`;
-                
-                typeWriter(finalPrompt, output);
-                saveHistory(input, finalPrompt);
-            }, 1200);
-        }
-
-        function typeWriter(text, element) {
-            element.innerText = "";
-            let i = 0;
-            function type() {
-                if (i < text.length) {
-                    element.innerText += text.charAt(i);
-                    i++;
-                    setTimeout(type, 8);
-                }
-            }
-            type();
-        }
-
-        function saveHistory(query, prompt) {
-            let logs = JSON.parse(localStorage.getItem('logs') || '[]');
-            logs.unshift({ query, prompt, id: Date.now() });
-            logs = logs.slice(0, 4); // Keep recent 4
-            localStorage.setItem('logs', JSON.stringify(logs));
-            loadHistory();
-        }
-
-        function loadHistory() {
-            const container = document.getElementById('historyLog');
-            const logs = JSON.parse(localStorage.getItem('logs') || '[]');
-            container.innerHTML = logs.length ? "" : "<p class='text-slate-800 font-mono text-xs'>EMPTY LOG FILE</p>";
-            
-            logs.forEach(item => {
-                container.innerHTML += `
-                    <div class="bento-card p-4 rounded-2xl cursor-pointer hover:bg-slate-800 transition" onclick="restore('${item.id}')">
-                        <p class="text-[9px] text-intlOrange font-mono uppercase mb-2">TS: ${new Date(item.id).toLocaleTimeString()}</p>
-                        <p class="text-white text-xs font-bold truncate">${item.query}</p>
-                    </div>`;
-            });
-        }
-
-        function restore(id) {
-            const logs = JSON.parse(localStorage.getItem('logs') || '[]');
-            const entry = logs.find(l => l.id == id);
-            if(entry) {
-                document.getElementById('userInput').value = entry.query;
-                document.getElementById('output').innerText = entry.prompt;
-                document.getElementById('resultContainer').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function copyPrompt() {
-            const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = "✓_COPIED";
-            setTimeout(() => { btn.innerText = "COPY_DATA"; }, 2000);
-        }
-    </script>
-</body>
-</html>
+    <footer class="mt-16 pt-8 border-t border-slate-900 text-center">
+        <p class="text-slate-600 font-mono text-[10px] uppercase tracking-widest mb-4">
+            Optimized for: ChatGPT Marketing Prompts • Technical AI Coding • Strategic Synthesis
+        </p>
+        <p class="text-slate-700 text-[9px]">
+            PromptEngine v4.0 is a utility designed to maximize AI utility through structured role-action frameworks. 
+            © 2026 Industrial Systems.
+        </p>
+    </footer>
+</section>
