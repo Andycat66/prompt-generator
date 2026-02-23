@@ -119,11 +119,26 @@
             loadHistory();
         }
         function loadHistory() {
-            const h = document.getElementById('hist');
-            const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
-            if (logs.length === 0) return;
-            h.innerHTML = logs.map(l => `<div class="bento p-4 cursor-pointer hover:bg-slate-800 group" onclick="set('${l.q}')"><p class="text-[9px] text-[#FF4F00] uppercase mb-1">LOG: ${new Date(l.id).toLocaleTimeString()}</p><p class="text-white text-xs font-bold truncate group-hover:text-[#FF4F00] transition-colors">${l.q}</p></div>`).join('');
-        }
+    const h = document.getElementById('hist');
+    const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
+    
+    // This part adds the "System Idle" placeholder
+    if (logs.length === 0) {
+        h.innerHTML = `
+            <div class="md:col-span-2 py-10 border border-dashed border-slate-800 rounded-2xl flex items-center justify-center">
+                <p class="text-[10px] font-mono text-slate-700 uppercase tracking-[0.5em] animate-pulse">
+                    Waiting for input... system idle
+                </p>
+            </div>`;
+        return;
+    }
+
+    h.innerHTML = logs.map(l => `
+        <div class="bento p-4 cursor-pointer hover:bg-slate-800 group" onclick="set('${l.q}')">
+            <p class="text-[9px] text-[#FF4F00] uppercase mb-1 font-bold">LOG_ID: ${new Date(l.id).toLocaleTimeString()}</p>
+            <p class="text-white text-xs font-bold truncate group-hover:text-[#FF4F00] transition-colors">${l.q}</p>
+        </div>`).join('');
+}
         function copy() {
             navigator.clipboard.writeText(document.getElementById('out').innerText);
             document.getElementById('cb').innerText = "DONE_✓";
