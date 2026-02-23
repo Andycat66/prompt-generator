@@ -1,57 +1,89 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromptEngine AI | Pro Terminal</title>
+    <title>PromptEngine AI | Industrial Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: { intlOrange: '#FF4F00', spaceBlack: '#0B0C10', steelGrey: '#1F2833' },
-                    fontFamily: { mono: ['JetBrains Mono', 'monospace'], sans: ['Inter', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #0B0C10; color: #cbd5e1; }
-        .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); }
-        .orange-glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.6); }
+        /* International Orange: #FF4F00 */
+        :root { --intl-orange: #FF4F00; }
+        body { background-color: #0B0C10; font-family: 'Inter', sans-serif; }
         
-        /* Progress Bar Animation */
-        @keyframes scan {
-            0% { width: 0%; left: 0; }
-            50% { width: 100%; left: 0; }
-            100% { width: 0%; left: 100%; }
+        /* Custom Orange Glows */
+        .orange-border { border: 1px solid rgba(255, 79, 0, 0.3); }
+        .orange-text { color: var(--intl-orange); }
+        .orange-bg { background-color: var(--intl-orange); }
+        
+        /* Simple Loading Bar Animation */
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
-        .scanner-line {
-            height: 2px;
-            background: #FF4F00;
-            box-shadow: 0 0 10px #FF4F00;
-            position: relative;
-            animation: scan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        .load-progress {
+            height: 3px;
+            background: var(--intl-orange);
+            box-shadow: 0 0 10px var(--intl-orange);
+            width: 0%;
         }
+        .animate-load { animation: loading 1.5s ease-in-out forwards; }
+
+        .hidden { display: none; }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-intlOrange selection:text-white">
+<body class="text-slate-300">
 
-    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
-            <span class="font-mono font-bold tracking-tighter text-white text-xl uppercase">Prompt<span class="text-intlOrange">Engine</span></span>
+    <nav class="p-6 border-b border-slate-800">
+        <div class="max-w-4xl mx-auto flex items-center gap-3">
+            <div class="w-8 h-8 orange-bg rounded flex items-center justify-center font-bold text-black">P</div>
+            <span class="font-bold tracking-tighter text-xl text-white">PROMPT<span class="orange-text">ENGINE</span></span>
         </div>
-        <div class="text-[10px] font-mono border border-intlOrange/30 px-3 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">Core Online</div>
     </nav>
 
-    <main class="container mx-auto px-6 py-12 max-w-4xl">
+    <main class="max-w-4xl mx-auto px-6 py-12">
         
-        <section class="text-center mb-12">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter orange-glow">COMMAND CENTER</h1>
-            <p class="text-slate-500 font-mono text-xs uppercase tracking-[0.3em]">AI Synthesis Engine v4.0</p>
-        </section>
+        <div class="bg-[#1F2833] p-8 rounded-2xl orange-border mb-8 shadow-2xl">
+            <h2 class="font-mono text-[10px] uppercase tracking-widest orange-text mb-4">Input Parameters</h2>
+            <textarea id="userInput" placeholder="I want to write a technical blog about..." 
+                class="w-full bg-transparent text-xl text-white outline-none h-32 placeholder:text-slate-700 font-medium"></textarea>
+            
+            <div class="flex justify-between items-center mt-6">
+                <div class="flex gap-2">
+                    <button onclick="setInput('Technical Analysis')" class="text-[10px] font-mono border border-slate-700 px-3 py-1 rounded hover:border-orange-500">/TECH</button>
+                    <button onclick="setInput('Marketing Script')" class="text-[10px] font-mono border border-slate-700 px-3 py-1 rounded hover:border-orange-500">/MARKET</button>
+                </div>
+                <button onclick="handleGenerate()" class="orange-bg text-black font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-orange-500/20">
+                    GENERATE PROMPT
+                </button>
+            </div>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid
+        <div id="loader" class="hidden mb-8">
+            <div class="w-full bg-slate-800 rounded-full h-[3px] overflow-hidden">
+                <div id="progressBar" class="load-progress"></div>
+            </div>
+            <p class="text-center font-mono text-[10px] mt-2 orange-text animate-pulse uppercase">Processing Synthesis...</p>
+        </div>
+
+        <div id="resultBox" class="hidden bg-black/40 p-8 rounded-2xl orange-border border-l-4 border-l-[#FF4F00]">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                <span class="font-mono text-[10px] orange-text font-bold uppercase tracking-widest">Synthesis Complete</span>
+                <button onclick="copyToClipboard()" id="copyBtn" class="text-[10px] font-mono bg-white/5 border border-white/10 px-4 py-2 rounded hover:bg-orange-500 hover:text-black transition-all">COPY_RESULT</button>
+            </div>
+            <p id="output" class="font-mono text-white leading-relaxed text-sm"></p>
+        </div>
+
+    </main>
+
+    <script>
+        function setInput(val) {
+            document.getElementById('userInput').value = val;
+        }
+
+        function handleGenerate() {
+            const input = document.getElementById('userInput').value;
+            if (!input) return alert("Please enter something first!");
+
+            const loader = document.getElementById('loader');
