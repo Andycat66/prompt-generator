@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromptEngine AI | Pro Industrial Edition</title>
+    <title>PromptEngine AI | Persistent Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <script>
@@ -11,113 +11,75 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        intlOrange: '#FF4F00',
-                        spaceBlack: '#0B0C10',
-                        steelGrey: '#1F2833',
-                    },
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'monospace'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
+                    colors: { intlOrange: '#FF4F00', spaceBlack: '#0B0C10', steelGrey: '#1F2833' },
+                    fontFamily: { mono: ['JetBrains Mono', 'monospace'], sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0B0C10; }
+        body { background-color: #0B0C10; scroll-behavior: smooth; }
         .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); transition: all 0.3s ease; }
-        .bento-card:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
         .orange-glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.5); }
-        
-        /* High-Tech Loading Bar */
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .scanner-bar {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #FF4F00, transparent);
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        .scanner-bar::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #FF4F00;
-            box-shadow: 0 0 15px #FF4F00;
-            animation: scan 1.5s infinite linear;
-        }
+        .scanner-bar { height: 2px; background: linear-gradient(90deg, transparent, #FF4F00, transparent); width: 100%; position: relative; overflow: hidden; }
+        .scanner-bar::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #FF4F00; box-shadow: 0 0 15px #FF4F00; animation: scan 1.5s infinite linear; }
+        @keyframes scan { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
     </style>
 </head>
-<body class="text-slate-300 font-sans antialiased">
+<body class="text-slate-300 font-sans antialiased" onload="loadHistory()">
 
     <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
         <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
             <span class="font-mono font-bold tracking-tighter text-white text-xl uppercase">PROMPT<span class="text-intlOrange">Engine</span></span>
         </div>
-        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">System Status: Active</div>
+        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">Storage: Active</div>
     </nav>
 
     <main class="container mx-auto px-6 py-12 max-w-4xl">
-        
         <section class="text-center mb-16">
-            <h1 class="text-6xl font-bold text-white mb-4 tracking-tighter orange-glow">COMMAND CENTER</h1>
-            <p class="text-slate-500 font-mono text-sm uppercase tracking-[0.2em]">High-Performance AI Prompt Synthesis</p>
+            <h1 class="text-6xl font-bold text-white mb-4 tracking-tighter orange-glow uppercase">Command Center</h1>
+            <p class="text-slate-500 font-mono text-sm uppercase tracking-[0.2em]">Neural Synthesis & Data Logging</p>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
             <div class="md:col-span-2 bento-card p-8 rounded-3xl">
-                <label class="block font-mono text-xs text-intlOrange mb-4 uppercase tracking-widest">User Input Source</label>
-                <textarea id="userInput" placeholder="Initialize task parameters..." 
-                    class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-700 font-bold"></textarea>
+                <label class="block font-mono text-xs text-intlOrange mb-4 uppercase tracking-widest">Input Stream</label>
+                <textarea id="userInput" placeholder="Initialize parameters..." class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-700 font-bold"></textarea>
                 <div class="mt-4 flex justify-end">
-                    <button onclick="startSynthesis()" id="genBtn"
-                        class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">
-                        SYNTHESIZE
-                    </button>
+                    <button onclick="startSynthesis()" id="genBtn" class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">SYNTHESIZE</button>
                 </div>
             </div>
 
             <div class="bento-card p-6 rounded-3xl flex flex-col justify-between">
-                <span class="font-mono text-[10px] text-slate-500 uppercase">Presets</span>
+                <span class="font-mono text-[10px] text-slate-500 uppercase">Macros</span>
                 <div class="space-y-2 mt-4">
-                    <button onclick="setInput('Write an technical analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Technical</button>
-                    <button onclick="setInput('Draft a persuasive marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Marketing</button>
-                    <button onclick="setInput('Code a clean React component for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Scripting</button>
+                    <button onclick="setInput('Technical deep-dive into...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Technical</button>
+                    <button onclick="setInput('Viral content strategy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Marketing</button>
+                    <button onclick="setInput('Optimization plan for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-[10px] font-mono border border-slate-700 uppercase">Strategy</button>
                 </div>
             </div>
 
-            <div id="loader" class="hidden md:col-span-3 py-10">
-                <div class="scanner-bar rounded-full"></div>
-                <p class="text-center font-mono text-intlOrange text-[10px] mt-4 tracking-widest uppercase animate-pulse">Synthesizing Neural Context...</p>
-            </div>
+            <div id="loader" class="hidden md:col-span-3 py-10"><div class="scanner-bar rounded-full"></div></div>
 
             <div id="resultContainer" class="hidden md:col-span-3 bento-card p-8 rounded-3xl border-l-4 border-l-intlOrange bg-black/40">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-mono text-intlOrange font-bold italic tracking-widest">OUTPUT_RESULT.TXT</h3>
-                    <button onclick="copyPrompt()" id="copyBtn" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md text-white transition">COPY_OUTPUT</button>
+                    <h3 class="font-mono text-intlOrange font-bold italic tracking-widest text-xs">SYNTHESIS_OUTPUT</h3>
+                    <button onclick="copyPrompt()" id="copyBtn" class="text-[10px] bg-white/10 hover:bg-intlOrange hover:text-black px-4 py-2 rounded font-mono transition">COPY_DATA</button>
                 </div>
-                <pre id="output" class="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap"></pre>
+                <pre id="output" class="text-white font-mono text-sm leading-relaxed whitespace-pre-wrap"></pre>
+            </div>
+
+            <div class="md:col-span-3 mt-12">
+                <div class="flex items-center gap-4 mb-6">
+                    <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Session History</h2>
+                    <div class="h-[1px] flex-grow bg-slate-800"></div>
+                    <button onclick="clearHistory()" class="text-[10px] font-mono text-slate-500 hover:text-intlOrange uppercase">Clear All</button>
+                </div>
+                <div id="historyLog" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    </div>
             </div>
         </div>
-
-        <footer class="mt-20 border-t border-slate-800 pt-12 pb-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div>
-                    <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">Prompt Engineering 101</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-mono">This tool leverages the <strong>Role-Action-Context</strong> framework. By defining a specific persona, you increase output accuracy significantly.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">Optimized Interface</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-mono text-intlOrange">v4.2 // INTERNATIONAL ORANGE // HIGH VISIBILITY</p>
-                </div>
-            </div>
-        </footer>
     </main>
 
     <script>
@@ -125,14 +87,86 @@
 
         function startSynthesis() {
             const input = document.getElementById('userInput').value;
-            if(!input) return alert("System requires input parameters.");
-
+            if(!input) return alert("System requires parameters.");
+            
             const loader = document.getElementById('loader');
             const resultBox = document.getElementById('resultContainer');
-            const output = document.getElementById('output');
             const btn = document.getElementById('genBtn');
 
-            // Start Animation Sequence
             btn.disabled = true;
             resultBox.classList.add('hidden');
-            loader.classList.remove('
+            loader.classList.remove('hidden');
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                btn.disabled = false;
+
+                const text = `[IDENTITY]: Expert Analyst\n[CONTEXT]: ${input}\n[TASK]: Execute high-density synthesis.\n[FORMAT]: Industrial Markdown.`;
+                
+                typeWriter(text, document.getElementById('output'));
+                saveToHistory(input, text);
+            }, 1200);
+        }
+
+        function typeWriter(text, element) {
+            element.innerText = "";
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerText += text.charAt(i);
+                    i++;
+                    setTimeout(type, 8);
+                }
+            }
+            type();
+        }
+
+        function saveToHistory(query, prompt) {
+            let history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+            history.unshift({ query, prompt, id: Date.now() });
+            history = history.slice(0, 6); // Keep last 6
+            localStorage.setItem('promptHistory', JSON.stringify(history));
+            loadHistory();
+        }
+
+        function loadHistory() {
+            const log = document.getElementById('historyLog');
+            const history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+            log.innerHTML = history.length ? "" : "<p class='text-slate-700 font-mono text-xs'>No recent logs found.</p>";
+            
+            history.forEach(item => {
+                log.innerHTML += `
+                    <div class="bento-card p-4 rounded-2xl cursor-pointer hover:bg-slate-800 transition" onclick="restorePrompt('${item.id}')">
+                        <p class="text-[10px] text-intlOrange font-mono uppercase mb-2">Logged: ${new Date(item.id).toLocaleTimeString()}</p>
+                        <p class="text-white text-xs font-bold line-clamp-1">${item.query}</p>
+                    </div>`;
+            });
+        }
+
+        function restorePrompt(id) {
+            const history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+            const item = history.find(i => i.id == id);
+            if(item) {
+                document.getElementById('userInput').value = item.query;
+                document.getElementById('output').innerText = item.prompt;
+                document.getElementById('resultContainer').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('promptHistory');
+            loadHistory();
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "✓_COPIED";
+            setTimeout(() => { btn.innerText = "COPY_DATA"; }, 2000);
+        }
+    </script>
+</body>
+</html>
