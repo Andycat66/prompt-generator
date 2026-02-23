@@ -1,131 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>PromptEngine AI | Free Professional AI Prompt Generator</title>
-    <meta name="description" content="The best free AI prompt generator for ChatGPT, Claude, and Midjourney. Create high-quality prompts for marketing, coding, and creative writing in seconds.">
-    <meta name="keywords" content="AI prompt generator, ChatGPT prompt tool, free prompt engineering, professional AI prompts">
-    
-    <meta name="google-site-verification" content="YOUR_CODE_HERE" />
-
+    <title>PromptEngine AI | Pro Industrial Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        intlOrange: '#FF4F00',
+                        spaceBlack: '#0B0C10',
+                        steelGrey: '#1F2833',
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-
     <style>
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
-        .dark .glass { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); }
+        body { background-color: #0B0C10; }
+        .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); transition: all 0.3s ease; }
+        .bento-card:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
+        .orange-glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.5); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+<body class="text-slate-300 font-sans antialiased">
 
-    <div class="fixed top-6 right-6">
-        <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 hover:scale-110 transition">
-            <span id="theme-icon">🌙</span>
-        </button>
-    </div>
-
-    <main class="flex-grow container mx-auto px-6 py-20 max-w-2xl text-center">
-        <h1 class="text-5xl font-bold mb-4 tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">PromptEngine AI</h1>
-        <p class="text-slate-500 dark:text-slate-400 mb-12 text-lg">Turn simple ideas into expert-level AI prompts instantly.</p>
-
-        <div class="glass p-2 rounded-2xl shadow-2xl mb-8 flex items-center border border-white dark:border-slate-800">
-            <input id="userInput" type="text" placeholder="I want to write a blog about..." 
-                   class="w-full bg-transparent p-4 outline-none text-lg text-slate-800 dark:text-white">
-            <button onclick="generatePrompt()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transition-all active:scale-95">
-                Generate
-            </button>
+    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
+            <span class="font-mono font-bold tracking-tighter text-white text-xl">PROMPT<span class="text-intlOrange uppercase">Engine</span></span>
         </div>
+        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest">System Status: Active</div>
+    </nav>
 
-        <div class="flex flex-wrap justify-center gap-3 mb-16">
-            <button onclick="setInput('Write a high-converting marketing email for...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">📧 Marketing</button>
-            <button onclick="setInput('Fix this code and explain the error...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">💻 Coding</button>
-            <button onclick="setInput('Write a viral LinkedIn post about...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">📱 Social Media</button>
-        </div>
+    <main class="container mx-auto px-6 py-12 max-w-4xl">
+        
+        <section class="text-center mb-16">
+            <h1 class="text-6xl font-bold text-white mb-4 tracking-tighter orange-glow">COMMAND CENTER</h1>
+            <p class="text-slate-500 font-mono text-sm uppercase tracking-[0.2em]">High-Performance AI Prompt Synthesis</p>
+        </section>
 
-        <div id="resultContainer" class="hidden text-left animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div class="glass p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Optimized Mega-Prompt</span>
-                    <button onclick="copyPrompt()" id="copyBtn" class="bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 dark:hover:bg-blue-900 transition">Copy Prompt</button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div class="md:col-span-2 bento-card p-8 rounded-3xl">
+                <label class="block font-mono text-xs text-intlOrange mb-4 uppercase tracking-widest">User Input Source</label>
+                <textarea id="userInput" placeholder="Initialize task parameters..." 
+                    class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-700 font-bold"></textarea>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="generatePrompt()" 
+                        class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">
+                        SYNTHESIZE
+                    </button>
                 </div>
-                <p id="output" class="text-slate-700 dark:text-slate-300 leading-relaxed text-lg italic font-light"></p>
+            </div>
+
+            <div class="bento-card p-6 rounded-3xl flex flex-col justify-between">
+                <span class="font-mono text-[10px] text-slate-500 uppercase">Presets</span>
+                <div class="space-y-2 mt-4">
+                    <button onclick="setInput('Write an technical analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">TECHNICAL</button>
+                    <button onclick="setInput('Draft a persuasive marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">MARKETING</button>
+                    <button onclick="setInput('Code a clean React component for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">SCRIPTING</button>
+                </div>
+            </div>
+
+            <div id="resultContainer" class="hidden md:col-span-3 bento-card p-8 rounded-3xl border-l-4 border-l-intlOrange bg-black/40">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-mono text-intlOrange font-bold italic tracking-widest">OUTPUT_RESULT.TXT</h3>
+                    <button onclick="copyPrompt()" id="copyBtn" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md text-white transition">COPY_OUTPUT</button>
+                </div>
+                <pre id="output" class="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap"></pre>
             </div>
         </div>
+
+        <footer class="mt-20 border-t border-slate-800 pt-12 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="font-bold text-white mb-4">Prompt Engineering 101</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">This tool leverages the <strong>Role-Action-Context</strong> framework. By defining a specific persona and constraints, you reduce AI hallucinations and increase output accuracy by up to 40%.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Why International Orange?</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Used for visibility in extreme environments. We believe your prompts should be just as clear and impossible to miss. Optimized for 2026 performance standards.</p>
+                </div>
+            </div>
+        </footer>
     </main>
 
-    <section class="bg-white dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 py-24">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Learn More About Prompt Engineering</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-                    <h3 class="font-bold mb-2">What is an AI Prompt Generator?</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">It's a tool that takes a basic idea and adds the necessary "Role," "Context," and "Constraints" to ensure AI models like ChatGPT give professional results.</p>
-                </div>
-                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-                    <h3 class="font-bold mb-2">How do I use these prompts?</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Simply click generate, copy the text, and paste it into any LLM (ChatGPT, Claude, Gemini). The output will be 10x more structured than a simple question.</p>
-                </div>
-                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 text-center md:col-span-2">
-                    <h3 class="font-bold mb-2 underline text-blue-500">Why PromptEngine AI?</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">We focus on speed, privacy, and minimalist design to give you the fastest prompt engineering experience in 2026.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <script>
-        // THEME LOGIC
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                icon.innerText = '🌙';
-            } else {
-                html.classList.add('dark');
-                icon.innerText = '☀️';
-            }
-        }
-
-        // GENERATION LOGIC
         function setInput(val) { document.getElementById('userInput').value = val; }
+
         function generatePrompt() {
             const input = document.getElementById('userInput').value;
-            if(!input) return alert("Please type something first!");
-            const megaPrompt = `[Role]: Act as a world-class expert in this topic.\n\n[Task]: ${input}\n\n[Format]: Provide a detailed, structured response with clear headings. Focus on actionable insights and avoid generic fluff. Use a tone that is professional yet highly engaging.`;
+            if(!input) return alert("System requires input parameters.");
+            
+            const megaPrompt = `[IDENTITY]: Senior Expert & Consultant\n[TASK]: ${input}\n[CONSTRAINTS]: 1. No fluff. 2. High-density information. 3. Structured markdown headers.\n[GOAL]: Maximum actionable utility.`;
+
             document.getElementById('output').innerText = megaPrompt;
             document.getElementById('resultContainer').classList.remove('hidden');
-        }
-
-        // COPY LOGIC
-        function copyPrompt() {
-            const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = "✓ Copied!";
-            btn.classList.add('text-green-500');
-            setTimeout(() => { 
-                btn.innerText = "Copy Prompt"; 
-                btn.classList.remove('text-green-500');
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+            window.scrollTo
