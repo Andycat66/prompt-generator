@@ -29,6 +29,27 @@
         .bento-card { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); transition: all 0.3s ease; }
         .bento-card:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
         .orange-glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.5); }
+        
+        /* High-Tech Loading Bar */
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .scanner-bar {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF4F00, transparent);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .scanner-bar::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #FF4F00;
+            box-shadow: 0 0 15px #FF4F00;
+            animation: scan 1.5s infinite linear;
+        }
     </style>
 </head>
 <body class="text-slate-300 font-sans antialiased">
@@ -36,9 +57,9 @@
     <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
         <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-intlOrange rounded-md flex items-center justify-center font-bold text-spaceBlack">P</div>
-            <span class="font-mono font-bold tracking-tighter text-white text-xl">PROMPT<span class="text-intlOrange uppercase">Engine</span></span>
+            <span class="font-mono font-bold tracking-tighter text-white text-xl uppercase">PROMPT<span class="text-intlOrange">Engine</span></span>
         </div>
-        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest">System Status: Active</div>
+        <div class="text-[10px] font-mono border border-intlOrange/30 px-2 py-1 rounded text-intlOrange uppercase tracking-widest animate-pulse">System Status: Active</div>
     </nav>
 
     <main class="container mx-auto px-6 py-12 max-w-4xl">
@@ -55,7 +76,7 @@
                 <textarea id="userInput" placeholder="Initialize task parameters..." 
                     class="w-full bg-transparent text-2xl text-white outline-none resize-none h-32 placeholder:text-slate-700 font-bold"></textarea>
                 <div class="mt-4 flex justify-end">
-                    <button onclick="generatePrompt()" 
+                    <button onclick="startSynthesis()" id="genBtn"
                         class="bg-intlOrange text-spaceBlack font-bold px-8 py-3 rounded-full hover:scale-105 active:scale-95 transition-all">
                         SYNTHESIZE
                     </button>
@@ -65,10 +86,15 @@
             <div class="bento-card p-6 rounded-3xl flex flex-col justify-between">
                 <span class="font-mono text-[10px] text-slate-500 uppercase">Presets</span>
                 <div class="space-y-2 mt-4">
-                    <button onclick="setInput('Write an technical analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">TECHNICAL</button>
-                    <button onclick="setInput('Draft a persuasive marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">MARKETING</button>
-                    <button onclick="setInput('Code a clean React component for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700">SCRIPTING</button>
+                    <button onclick="setInput('Write an technical analysis of...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Technical</button>
+                    <button onclick="setInput('Draft a persuasive marketing copy for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Marketing</button>
+                    <button onclick="setInput('Code a clean React component for...')" class="w-full text-left p-3 rounded-xl hover:bg-intlOrange hover:text-black transition-colors text-sm border border-slate-700 font-mono uppercase text-[10px]">Scripting</button>
                 </div>
+            </div>
+
+            <div id="loader" class="hidden md:col-span-3 py-10">
+                <div class="scanner-bar rounded-full"></div>
+                <p class="text-center font-mono text-intlOrange text-[10px] mt-4 tracking-widest uppercase animate-pulse">Synthesizing Neural Context...</p>
             </div>
 
             <div id="resultContainer" class="hidden md:col-span-3 bento-card p-8 rounded-3xl border-l-4 border-l-intlOrange bg-black/40">
@@ -83,12 +109,12 @@
         <footer class="mt-20 border-t border-slate-800 pt-12 pb-20">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div>
-                    <h4 class="font-bold text-white mb-4">Prompt Engineering 101</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">This tool leverages the <strong>Role-Action-Context</strong> framework. By defining a specific persona and constraints, you reduce AI hallucinations and increase output accuracy by up to 40%.</p>
+                    <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">Prompt Engineering 101</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-mono">This tool leverages the <strong>Role-Action-Context</strong> framework. By defining a specific persona, you increase output accuracy significantly.</p>
                 </div>
                 <div>
-                    <h4 class="font-bold text-white mb-4">Why International Orange?</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">Used for visibility in extreme environments. We believe your prompts should be just as clear and impossible to miss. Optimized for 2026 performance standards.</p>
+                    <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">Optimized Interface</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-mono text-intlOrange">v4.2 // INTERNATIONAL ORANGE // HIGH VISIBILITY</p>
                 </div>
             </div>
         </footer>
@@ -97,24 +123,16 @@
     <script>
         function setInput(val) { document.getElementById('userInput').value = val; }
 
-        function generatePrompt() {
+        function startSynthesis() {
             const input = document.getElementById('userInput').value;
             if(!input) return alert("System requires input parameters.");
-            
-            const megaPrompt = `[IDENTITY]: Senior Expert & Consultant\n[TASK]: ${input}\n[CONSTRAINTS]: 1. No fluff. 2. High-density information. 3. Structured markdown headers.\n[GOAL]: Maximum actionable utility.`;
 
-            document.getElementById('output').innerText = megaPrompt;
-            document.getElementById('resultContainer').classList.remove('hidden');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
+            const loader = document.getElementById('loader');
+            const resultBox = document.getElementById('resultContainer');
+            const output = document.getElementById('output');
+            const btn = document.getElementById('genBtn');
 
-        function copyPrompt() {
-            const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = "✓ COPIED_TO_CLIPBOARD";
-            setTimeout(() => { btn.innerText = "COPY_OUTPUT"; }, 2000);
-        }
-    </script>
-</body>
-</html>
+            // Start Animation Sequence
+            btn.disabled = true;
+            resultBox.classList.add('hidden');
+            loader.classList.remove('
