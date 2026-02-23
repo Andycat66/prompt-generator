@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptEngine AI | Minimal Prompt Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <main class="flex-grow container mx-auto px-6 py-20 max-w-2xl text-center">
+        <h1 class="text-4xl font-semibold mb-2 tracking-tight">PromptEngine AI</h1>
+        <p class="text-slate-500 mb-10">Turn simple ideas into expert-level AI prompts.</p>
+
+        <div class="glass p-2 rounded-2xl shadow-xl mb-8 flex items-center">
+            <input id="userInput" type="text" placeholder="I want to write a blog about..." 
+                   class="w-full bg-transparent p-4 outline-none text-lg">
+            <button onclick="generatePrompt()" class="bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition">
+                Generate
+            </button>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2 mb-12">
+            <button onclick="setInput('Write a marketing email for...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">📧 Marketing</button>
+            <button onclick="setInput('Explain this code snippet...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">💻 Coding</button>
+            <button onclick="setInput('Write a short story about...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">✍️ Creative</button>
+        </div>
+
+        <div id="resultContainer" class="hidden text-left">
+            <div class="glass p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Your Mega-Prompt</span>
+                    <button onclick="copyPrompt()" id="copyBtn" class="text-sm text-blue-600 font-medium">Copy to Clipboard</button>
+                </div>
+                <p id="output" class="text-slate-700 leading-relaxed"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-20">
+        <div class="container mx-auto px-6 max-w-2xl">
+            <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Frequently Asked Questions</h2>
+            <details class="mb-4 group">
+                <summary class="list-none flex justify-between items-center cursor-pointer font-medium">
+                    What is an AI Prompt Generator?
+                    <span class="group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <p class="pt-3 text-slate-500 text-sm">Our tool uses a "Role-Context-Task" framework to ensure your AI gets the best results every time.</p>
+            </details>
+            <details class="group">
+                <summary class="list-none flex justify-between items-center cursor-pointer font-medium">
+                    Is this tool free to use?
+                    <span class="group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <p class="pt-3 text-slate-500 text-sm">Yes! PromptEngine AI is a 100% free utility designed for speed and privacy.</p>
+            </details>
+        </div>
+    </footer>
+
+    <script>
+        function setInput(val) { document.getElementById('userInput').value = val; }
+
+        function generatePrompt() {
+            const input = document.getElementById('userInput').value;
+            if(!input) return alert("Please type something first!");
+            
+            // The Logic "The Wrapper"
+            const megaPrompt = `Act as an expert in this field. I need you to: ${input}. 
+Please provide the output in a structured format, focusing on high-quality insights and actionable steps. 
+Avoid fluff and ensure the tone is professional yet engaging.`;
+
+            document.getElementById('output').innerText = megaPrompt;
+            document.getElementById('resultContainer').classList.remove('hidden');
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "✓ Copied!";
+            setTimeout(() => { btn.innerText = "Copy to Clipboard"; }, 2000);
+        }
+    </script>
+</body>
+</html>
