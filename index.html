@@ -3,89 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromptEngine AI | Minimal Prompt Generator</title>
+    
+    <title>PromptEngine AI | Free Professional AI Prompt Generator</title>
+    <meta name="description" content="The best free AI prompt generator for ChatGPT, Claude, and Midjourney. Create high-quality prompts for marketing, coding, and creative writing in seconds.">
+    <meta name="keywords" content="AI prompt generator, ChatGPT prompt tool, free prompt engineering, professional AI prompts">
+    
+    <meta name="google-site-verification" content="YOUR_CODE_HERE" />
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .dark .glass { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); }
     </style>
-    <script> window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); }; </script>
-<script defer src="/_vercel/insights/script.js"></script>
 </head>
-<body class="flex flex-col min-h-screen text-slate-800">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+
+    <div class="fixed top-6 right-6">
+        <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 hover:scale-110 transition">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </div>
 
     <main class="flex-grow container mx-auto px-6 py-20 max-w-2xl text-center">
-        <h1 class="text-4xl font-semibold mb-2 tracking-tight">PromptEngine AI</h1>
-        <p class="text-slate-500 mb-10">Turn simple ideas into expert-level AI prompts.</p>
+        <h1 class="text-5xl font-bold mb-4 tracking-tight bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">PromptEngine AI</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-12 text-lg">Turn simple ideas into expert-level AI prompts instantly.</p>
 
-        <div class="glass p-2 rounded-2xl shadow-xl mb-8 flex items-center">
+        <div class="glass p-2 rounded-2xl shadow-2xl mb-8 flex items-center border border-white dark:border-slate-800">
             <input id="userInput" type="text" placeholder="I want to write a blog about..." 
-                   class="w-full bg-transparent p-4 outline-none text-lg">
-            <button onclick="generatePrompt()" class="bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition">
+                   class="w-full bg-transparent p-4 outline-none text-lg text-slate-800 dark:text-white">
+            <button onclick="generatePrompt()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transition-all active:scale-95">
                 Generate
             </button>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-2 mb-12">
-            <button onclick="setInput('Write a marketing email for...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">📧 Marketing</button>
-            <button onclick="setInput('Explain this code snippet...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">💻 Coding</button>
-            <button onclick="setInput('Write a short story about...')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm hover:border-black transition">✍️ Creative</button>
+        <div class="flex flex-wrap justify-center gap-3 mb-16">
+            <button onclick="setInput('Write a high-converting marketing email for...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">📧 Marketing</button>
+            <button onclick="setInput('Fix this code and explain the error...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">💻 Coding</button>
+            <button onclick="setInput('Write a viral LinkedIn post about...')" class="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-blue-500 transition">📱 Social Media</button>
         </div>
 
-        <div id="resultContainer" class="hidden text-left">
-            <div class="glass p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Your Mega-Prompt</span>
-                    <button onclick="copyPrompt()" id="copyBtn" class="text-sm text-blue-600 font-medium">Copy to Clipboard</button>
+        <div id="resultContainer" class="hidden text-left animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div class="glass p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Optimized Mega-Prompt</span>
+                    <button onclick="copyPrompt()" id="copyBtn" class="bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-50 dark:hover:bg-blue-900 transition">Copy Prompt</button>
                 </div>
-                <p id="output" class="text-slate-700 leading-relaxed"></p>
+                <p id="output" class="text-slate-700 dark:text-slate-300 leading-relaxed text-lg italic font-light"></p>
             </div>
         </div>
     </main>
 
-    <footer class="bg-slate-50 border-t border-slate-200 py-20">
-        <div class="container mx-auto px-6 max-w-2xl">
-            <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Frequently Asked Questions</h2>
-            <details class="mb-4 group">
-                <summary class="list-none flex justify-between items-center cursor-pointer font-medium">
-                    What is an AI Prompt Generator?
-                    <span class="group-open:rotate-180 transition-transform">↓</span>
-                </summary>
-                <p class="pt-3 text-slate-500 text-sm">Our tool uses a "Role-Context-Task" framework to ensure your AI gets the best results every time.</p>
-            </details>
-            <details class="group">
-                <summary class="list-none flex justify-between items-center cursor-pointer font-medium">
-                    Is this tool free to use?
-                    <span class="group-open:rotate-180 transition-transform">↓</span>
-                </summary>
-                <p class="pt-3 text-slate-500 text-sm">Yes! PromptEngine AI is a 100% free utility designed for speed and privacy.</p>
-            </details>
+    <section class="bg-white dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 py-24">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-bold text-center mb-12">Learn More About Prompt Engineering</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <h3 class="font-bold mb-2">What is an AI Prompt Generator?</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">It's a tool that takes a basic idea and adds the necessary "Role," "Context," and "Constraints" to ensure AI models like ChatGPT give professional results.</p>
+                </div>
+                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <h3 class="font-bold mb-2">How do I use these prompts?</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Simply click generate, copy the text, and paste it into any LLM (ChatGPT, Claude, Gemini). The output will be 10x more structured than a simple question.</p>
+                </div>
+                <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 text-center md:col-span-2">
+                    <h3 class="font-bold mb-2 underline text-blue-500">Why PromptEngine AI?</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">We focus on speed, privacy, and minimalist design to give you the fastest prompt engineering experience in 2026.</p>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
     <script>
-        function setInput(val) { document.getElementById('userInput').value = val; }
+        // THEME LOGIC
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.innerText = '🌙';
+            } else {
+                html.classList.add('dark');
+                icon.innerText = '☀️';
+            }
+        }
 
+        // GENERATION LOGIC
+        function setInput(val) { document.getElementById('userInput').value = val; }
         function generatePrompt() {
             const input = document.getElementById('userInput').value;
             if(!input) return alert("Please type something first!");
-            
-            // The Logic "The Wrapper"
-            const megaPrompt = `Act as an expert in this field. I need you to: ${input}. 
-Please provide the output in a structured format, focusing on high-quality insights and actionable steps. 
-Avoid fluff and ensure the tone is professional yet engaging.`;
-
+            const megaPrompt = `[Role]: Act as a world-class expert in this topic.\n\n[Task]: ${input}\n\n[Format]: Provide a detailed, structured response with clear headings. Focus on actionable insights and avoid generic fluff. Use a tone that is professional yet highly engaging.`;
             document.getElementById('output').innerText = megaPrompt;
             document.getElementById('resultContainer').classList.remove('hidden');
         }
 
+        // COPY LOGIC
         function copyPrompt() {
             const text = document.getElementById('output').innerText;
             navigator.clipboard.writeText(text);
             const btn = document.getElementById('copyBtn');
             btn.innerText = "✓ Copied!";
-            setTimeout(() => { btn.innerText = "Copy to Clipboard"; }, 2000);
+            btn.classList.add('text-green-500');
+            setTimeout(() => { 
+                btn.innerText = "Copy Prompt"; 
+                btn.classList.remove('text-green-500');
+            }, 2000);
         }
     </script>
 </body>
