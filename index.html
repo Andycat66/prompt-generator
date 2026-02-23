@@ -1,36 +1,99 @@
-<section class="max-w-4xl mx-auto px-6 pb-20">
-    <div class="flex items-center gap-4 mb-8">
-        <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Operation Manual</h2>
-        <div class="h-[1px] flex-grow bg-slate-800"></div>
-    </div>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPT ENGINE | COMMAND CENTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0B0C10; color: #94a3b8; font-family: 'JetBrains Mono', monospace; scroll-behavior: smooth; }
+        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); border-radius: 1.5rem; transition: 0.3s; }
+        .bento:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.15); }
+        .glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.5); }
+        @keyframes scan { 0% { left: -40%; } 100% { left: 100%; } }
+        .scanner { position: absolute; height: 2px; width: 40%; background: #FF4F00; box-shadow: 0 0 15px #FF4F00; animation: scan 2s infinite linear; }
+    </style>
+</head>
+<body class="p-4 md:p-12 min-h-screen" onload="loadHistory()">
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bento p-6 border-slate-800">
-            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">01.</div>
-            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Initialize</h3>
-            <p class="text-slate-500 text-xs leading-relaxed">Enter your raw idea or task into the Primary Input. Be as specific as possible regarding your goals.</p>
+    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-16">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-[#FF4F00] rounded flex items-center justify-center text-black font-bold text-xl">P</div>
+            <span class="text-white font-bold tracking-tighter text-2xl uppercase">PROMPT<span class="text-[#FF4F00]">ENGINE</span></span>
+        </div>
+        <div class="text-[10px] border border-orange-500/30 px-3 py-1 rounded text-[#FF4F00] uppercase tracking-[0.2em] animate-pulse">Core Online</div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto mb-20">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter glow uppercase">Command Center</h1>
+            <p class="text-slate-500 text-xs uppercase tracking-[0.4em]">Industrial Synthesis Engine v4.0</p>
         </div>
 
-        <div class="bento p-6 border-slate-800">
-            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">02.</div>
-            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Synthesize</h3>
-            <p class="text-slate-500 text-xs leading-relaxed">Click 'Synthesize' to run the neural engine. The system will wrap your input in a high-performance expert framework.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 bento p-8 relative overflow-hidden shadow-2xl">
+                <textarea id="ui" placeholder="Initialize parameters..." class="w-full bg-transparent text-white text-2xl font-bold outline-none h-40 resize-none placeholder:text-slate-800"></textarea>
+                <div class="flex justify-end mt-4">
+                    <button onclick="run()" class="bg-[#FF4F00] text-black font-bold px-10 py-3 rounded-full hover:brightness-110 active:scale-95 transition-all uppercase text-sm">Synthesize</button>
+                </div>
+            </div>
+
+            <div class="bento p-6 flex flex-col justify-between">
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest">Quick Macros</span>
+                <div class="space-y-3">
+                    <button onclick="set('Technical analysis of...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Tech</button>
+                    <button onclick="set('Marketing copy for...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Market</button>
+                    <button onclick="set('Strategy for...')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] uppercase hover:bg-[#FF4F00] hover:text-black transition">/Logic</button>
+                </div>
+            </div>
+
+            <div id="ld" class="hidden md:col-span-3 py-8 relative">
+                <div class="h-[1px] bg-slate-800 w-full relative overflow-hidden">
+                    <div class="scanner"></div>
+                </div>
+            </div>
+
+            <div id="rc" class="hidden md:col-span-3 bento p-8 border-l-4 border-l-[#FF4F00] bg-black/40">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-[#FF4F00] text-[10px] uppercase tracking-widest font-bold">Encrypted_Output.log</span>
+                    <button onclick="copy()" id="cb" class="text-[10px] border border-white/10 px-4 py-1 rounded hover:bg-white/5 transition">Copy_Data</button>
+                </div>
+                <pre id="out" class="text-white text-sm leading-relaxed whitespace-pre-wrap"></pre>
+            </div>
+            
+            <div id="hist" class="md:col-span-3 mt-10 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+    </main>
+
+    <section class="max-w-4xl mx-auto px-6 pb-20 border-t border-slate-900 pt-16">
+        <div class="flex items-center gap-4 mb-8">
+            <h2 class="font-mono text-white font-bold tracking-widest uppercase text-sm">Operation Manual</h2>
+            <div class="h-[1px] flex-grow bg-slate-800"></div>
         </div>
 
-        <div class="bento p-6 border-slate-800">
-            <div class="text-intlOrange font-bold mb-2 font-mono text-xl">03.</div>
-            <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Execute</h3>
-            <p class="text-slate-500 text-xs leading-relaxed">Copy the generated "Mega-Prompt" and paste it into ChatGPT, Claude, or Gemini for a 40% more accurate response.</p>
-        </div>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bento p-6 border-slate-800 bg-transparent">
+                <div class="text-[#FF4F00] font-bold mb-2 font-mono text-xl">01.</div>
+                <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Initialize</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">Enter your raw idea or task into the Primary Input. The more context you provide, the sharper the synthesis.</p>
+            </div>
 
-    <footer class="mt-16 pt-8 border-t border-slate-900 text-center">
-        <p class="text-slate-600 font-mono text-[10px] uppercase tracking-widest mb-4">
-            Optimized for: ChatGPT Marketing Prompts • Technical AI Coding • Strategic Synthesis
-        </p>
-        <p class="text-slate-700 text-[9px]">
-            PromptEngine v4.0 is a utility designed to maximize AI utility through structured role-action frameworks. 
-            © 2026 Industrial Systems.
-        </p>
-    </footer>
-</section>
+            <div class="bento p-6 border-slate-800 bg-transparent">
+                <div class="text-[#FF4F00] font-bold mb-2 font-mono text-xl">02.</div>
+                <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Synthesize</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">Click 'Synthesize' to wrap your input in an expert role-based framework designed for 2026 AI models.</p>
+            </div>
+
+            <div class="bento p-6 border-slate-800 bg-transparent">
+                <div class="text-[#FF4F00] font-bold mb-2 font-mono text-xl">03.</div>
+                <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-wider">Execute</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">Copy the result and paste it into ChatGPT or Claude. Expect significantly higher detail and actionable results.</p>
+            </div>
+        </div>
+
+        <footer class="mt-20 text-center opacity-40 hover:opacity-100 transition-opacity">
+            <p class="text-slate-600 font-mono text-[9px] uppercase tracking-[0.3em] mb-4">
+                Global Search Index: ChatGPT Marketing Prompts • AI Strategy Builder • Industrial Engineering
+            </p>
+            <p class="text-slate-700 text-[8px] uppercase tracking
