@@ -10,7 +10,7 @@
         .orange-text { color: #FF4F00; }
         .orange-bg { background-color: #FF4F00; }
         .glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.4); }
-        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.2); border-radius: 1rem; transition: all 0.3s ease; }
+        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.2); border-radius: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
         .bento:hover { border-color: #FF4F00; box-shadow: 0 0 20px rgba(255, 79, 0, 0.1); }
         pre { white-space: pre-wrap; word-wrap: break-word; }
         ::-webkit-scrollbar { width: 5px; }
@@ -22,19 +22,18 @@
     <div class="max-w-4xl mx-auto">
         <nav class="flex justify-between items-center mb-12">
             <h1 class="text-white font-bold text-2xl tracking-tighter glow uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
-            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-widest">CORE_V4.3.2_STABLE</div>
+            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-widest">CORE_V4.3.3_FIXED</div>
         </nav>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="md:col-span-2 bento p-6 shadow-2xl">
                 <label class="block text-[10px] uppercase mb-2 opacity-50 tracking-widest orange-text font-bold">Command Source</label>
                 <textarea id="ui" placeholder="e.g. 'contact form for a real estate site'..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:brightness-110 active:scale-95 transition-all uppercase text-sm shadow-lg shadow-orange-500/20">Synthesize Prompt</button>
+                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:brightness-110 active:scale-95 transition-all uppercase text-sm shadow-lg shadow-orange-500/20">Synthesize</button>
                 </div>
             </div>
 
             <div class="bento p-6 flex flex-col justify-between">
                 <span class="text-[10px] uppercase opacity-50 mb-4 tracking-widest">Quick Macros</span>
                 <div class="space-y-4">
-                    <button onclick="quickSet('Technical Analysis: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:border-[#FF4F00] hover:orange-text transition uppercase tracking-
