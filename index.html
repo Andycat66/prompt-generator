@@ -3,33 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMPT ENGINE | INTERNATIONAL ORAGE EDITION</title>
+    <title>PROMPT ENGINE | COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; overflow-x: hidden; }
-        
-        /* Official International Orange Profile */
         .orange-text { color: #FF4F00; }
         .orange-bg { background-color: #FF4F00; }
         .glow-orange { text-shadow: 0 0 15px rgba(255, 79, 0, 0.5); }
-        
-        .bento { 
-            background: #1F2833; 
-            border: 1px solid rgba(255, 79, 0, 0.15); 
-            border-radius: 1rem; 
-            transition: all 0.3s ease;
-        }
-        
-        .bento:hover {
-            border-color: #FF4F00;
-            box-shadow: 0 0 25px rgba(255, 79, 0, 0.1);
-        }
-
+        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.15); border-radius: 1rem; transition: all 0.3s ease; }
+        .bento:hover { border-color: #FF4F00; box-shadow: 0 0 25px rgba(255, 79, 0, 0.1); }
         pre { white-space: pre-wrap; word-wrap: break-word; }
-        
-        /* Custom Scrollbar for the Industrial Look */
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #0B0C10; }
         ::-webkit-scrollbar-thumb { background: #FF4F00; border-radius: 10px; }
     </style>
 </head>
@@ -38,7 +22,7 @@
     <div class="max-w-4xl mx-auto">
         <nav class="flex justify-between items-center mb-12">
             <h1 class="text-white font-bold text-2xl tracking-tighter glow-orange uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
-            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-[0.2em]">MISSION_STATUS: READY</div>
+            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-[0.2em]">CORE_V4.3.1_RECOVERY</div>
         </nav>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -46,4 +30,26 @@
                 <label class="block text-[10px] orange-text uppercase mb-2 font-bold tracking-widest">Command Source</label>
                 <textarea id="ui" placeholder="Initialize task parameters..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-10"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:brightness-125 hover:scale-105 active:scale-95 transition-all
+                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:brightness-125 transition-all uppercase text-sm shadow-[0_0_20px_rgba(255,79,0,0.3)]">Synthesize</button>
+                </div>
+            </div>
+
+            <div class="bento p-6 flex flex-col justify-between">
+                <span class="text-[10px] uppercase opacity-40 mb-4 tracking-widest">Macros</span>
+                <div class="space-y-4">
+                    <button onclick="quickSet('Technical: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:border-[#FF4F00] hover:orange-text transition uppercase tracking-widest">/Technical</button>
+                    <button onclick="quickSet('Marketing: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:border-[#FF4F00] hover:orange-text transition uppercase tracking-widest">/Marketing</button>
+                    <button onclick="quickSet('Logic: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:border-[#FF4F00] hover:orange-text transition uppercase tracking-widest">/Strategy</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="rc" class="hidden bento p-8 border-l-4 border-l-[#FF4F00] mb-12 bg-black/40">
+            <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                <span class="orange-text text-[10px] font-bold tracking-[0.4em]">DATA_STREAM_OUTPUT</span>
+                <button onclick="copyToClipboard()" id="cb" class="text-[10px] bg-white/5 border border-white/10 px-4 py-1 rounded hover:bg-[#FF4F00] hover:text-black transition uppercase font-bold">Copy Prompt</button>
+            </div>
+            <pre id="out" class="text-white text-sm leading-relaxed font-sans"></pre>
+        </div>
+
+        <div class="grid grid-cols-1 md
