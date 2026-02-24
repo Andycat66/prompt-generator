@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; overflow-x: hidden; }
-        /* International Orange #FF4F00 */
         .orange-text { color: #FF4F00; }
         .orange-bg { background-color: #FF4F00; }
         .glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.4); }
@@ -23,13 +22,13 @@
     <div class="max-w-4xl mx-auto">
         <nav class="flex justify-between items-center mb-12">
             <h1 class="text-white font-bold text-2xl tracking-tighter glow uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
-            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-widest">CORE_V4.3.2_STABLE</div>
+            <div class="text-[10px] border border-[#FF4F00]/40 px-3 py-1 orange-text font-bold tracking-widest uppercase">CORE_V4.3.4_FIXED</div>
         </nav>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="md:col-span-2 bento p-6 shadow-2xl">
                 <label class="block text-[10px] uppercase mb-2 opacity-50 tracking-widest orange-text font-bold">Command Source</label>
-                <textarea id="ui" placeholder="e.g. 'contact form for a real estate site'..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
+                <textarea id="ui" placeholder="e.g. 'coding a landing page'..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
                 <div class="flex justify-end mt-4">
                     <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:brightness-110 active:scale-95 transition-all uppercase text-sm shadow-lg shadow-orange-500/20">Synthesize Prompt</button>
                 </div>
@@ -47,7 +46,7 @@
 
         <div id="rc" class="hidden bento p-8 border-l-4 border-l-[#FF4F00] mb-12 bg-black/40">
             <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
-                <span class="orange-text text-[10px] font-bold tracking-[0.3em]">PROMPT_READY_FOR_DEPLOYMENT</span>
+                <span class="orange-text text-[10px] font-bold tracking-[0.3em]">PROMPT_GENERATED</span>
                 <button onclick="copyToClipboard()" id="cb" class="text-[10px] bg-white/10 px-4 py-1 rounded hover:bg-white/20 transition uppercase font-bold">Copy Prompt</button>
             </div>
             <pre id="out" class="text-white text-sm leading-relaxed font-sans"></pre>
@@ -57,17 +56,17 @@
             <div class="p-2">
                 <p class="orange-text font-bold text-xl mb-1">01.</p>
                 <p class="text-white text-[10px] font-bold uppercase mb-2">Initialize</p>
-                <p class="text-slate-500 text-xs leading-relaxed">Enter a simple topic. Our engine builds the expert persona for you.</p>
+                <p class="text-slate-500 text-xs">Enter a topic. The engine builds the expert persona.</p>
             </div>
             <div class="p-2">
                 <p class="orange-text font-bold text-xl mb-1">02.</p>
                 <p class="text-white text-[10px] font-bold uppercase mb-2">Synthesize</p>
-                <p class="text-slate-500 text-xs leading-relaxed">We wrap your idea in constraints, roles, and output requirements.</p>
+                <p class="text-slate-500 text-xs">Idea is wrapped in professional AI constraints.</p>
             </div>
             <div class="p-2">
                 <p class="orange-text font-bold text-xl mb-1">03.</p>
                 <p class="text-white text-[10px] font-bold uppercase mb-2">Execute</p>
-                <p class="text-slate-500 text-xs leading-relaxed">Copy the code block and paste it into ChatGPT, Claude, or Gemini.</p>
+                <p class="text-slate-500 text-xs">Copy and paste into ChatGPT or Claude.</p>
             </div>
         </div>
 
@@ -80,12 +79,11 @@
         </div>
 
         <footer class="text-center pb-20 opacity-30">
-            <div class="flex justify-center gap-6 text-[9px] uppercase tracking-widest mb-4">
+            <p class="text-[8px] tracking-[0.5em] mb-4 uppercase">Industrial Systems © 2026</p>
+            <div class="flex justify-center gap-6 text-[9px] uppercase tracking-widest">
                 <a href="#" class="hover:orange-text">Privacy</a>
                 <a href="#" class="hover:orange-text">Terms</a>
-                <a href="#" class="hover:orange-text">Contact</a>
             </div>
-            <p class="text-[8px] tracking-[0.5em]">INDUSTRIAL PROMPT SYSTEMS © 2026</p>
         </footer>
     </div>
 
@@ -102,28 +100,17 @@
             const outputBox = document.getElementById('rc');
             const outputText = document.getElementById('out');
 
-            const expandedPrompt = `Act as an expert Consultant specializing in ${inputVal}. 
-
-[TASK]: Your primary objective is to provide a comprehensive, high-performance solution for: ${inputVal}.
-
-[INSTRUCTIONS]:
-1. Adopt a professional, authoritative persona.
-2. Break the solution down into: Strategic Overview, Technical Requirements, and Execution Steps.
-3. Identify 3 potential risks or edge cases the user might have missed.
-4. Ensure all code or logic provided follows industry best practices.
-
-[CONSTRAINTS]:
-- Provide high-density information; avoid fluff or filler text.
-- Use Markdown headers for clear organization.
-- If the task is technical, provide clean, commented code snippets.
-
-[OUTPUT]: Begin with a deep dive into the requirements for ${inputVal} and proceed with the full solution.`;
+            // HEALED STRING LOGIC
+            const p = "Act as an expert specializing in " + inputVal + ".\n\n" +
+                      "[TASK]: Provide a comprehensive solution for: " + inputVal + ".\n\n" +
+                      "[INSTRUCTIONS]:\n1. Use a professional tone.\n2. Break down strategic requirements.\n3. Identify potential risks.\n\n" +
+                      "[OUTPUT]: Start the deep dive for " + inputVal + " now.";
 
             outputBox.classList.remove('hidden');
-            outputText.innerText = expandedPrompt;
+            outputText.innerText = p;
 
             window.scrollTo({ top: outputBox.offsetTop - 50, behavior: 'smooth' });
-            saveToLogs(inputVal, expandedPrompt);
+            saveToLogs(inputVal, p);
         }
 
         function saveToLogs(q, p) {
@@ -136,6 +123,32 @@
         function renderLogs() {
             const container = document.getElementById('hist');
             const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
-            
             if (logs.length === 0) {
-                container.innerHTML = '<div class="col-span-2
+                container.innerHTML = '<div class="col-span-2 py-10 border border-dashed border-slate-800 rounded-xl text-center"><p class="text-[9px] uppercase opacity-20 tracking-widest">Empty Cache</p></div>';
+                return;
+            }
+            container.innerHTML = logs.map(l => `
+                <div class="bento p-4 cursor-pointer hover:bg-slate-800 transition-colors" onclick="quickSet('${l.q.replace(/'/g, "\\'")}')">
+                    <p class="text-[8px] orange-text font-bold mb-1 uppercase">${new Date(l.id).toLocaleTimeString()}</p>
+                    <p class="text-white text-xs truncate font-bold">${l.q}</p>
+                </div>
+            `).join('');
+        }
+
+        function clearLogs() {
+            if(confirm("Wipe all logs?")) {
+                localStorage.removeItem('p-logs');
+                renderLogs();
+            }
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('out').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.getElementById('cb');
+            btn.innerText = "COPIED!";
+            setTimeout(() => { btn.innerText = "Copy Prompt"; }, 2000);
+        }
+    </script>
+</body>
+</html>
