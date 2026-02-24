@@ -3,115 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMPT ENGINE | COMMAND CENTER</title>
+    <title>PROMPT ENGINE | INDUSTRIAL COMMAND</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; }
+        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; overflow-x: hidden; }
         .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.2); border-radius: 1rem; }
         .orange-text { color: #FF4F00; }
         .orange-bg { background-color: #FF4F00; }
+        .glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.3); }
     </style>
 </head>
-<body class="p-6 md:p-12" onload="loadHistory()">
+<body class="p-4 md:p-12">
 
-    <main class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-12">
-            <h1 class="text-white font-bold text-2xl tracking-tighter uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
-            <div class="text-[10px] border border-orange-500/50 px-2 py-1 orange-text">v4.0.9 ONLINE</div>
-        </header>
+    <div class="max-w-4xl mx-auto">
+        <nav class="flex justify-between items-center mb-12">
+            <h1 class="text-white font-bold text-2xl tracking-tighter glow uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
+            <div class="text-[10px] border border-orange-500/40 px-3 py-1 orange-text font-bold">CORE_V4.1.0_STABLE</div>
+        </nav>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="md:col-span-2 bento p-6">
-                <textarea id="ui" placeholder="Enter task here..." class="w-full bg-transparent text-white text-xl outline-none h-32 resize-none"></textarea>
+                <label class="block text-[10px] uppercase mb-2 opacity-50">User Input Source</label>
+                <textarea id="ui" placeholder="Initialize task parameters (e.g. 'Marketing plan for coffee shop')..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="run()" class="orange-bg text-black font-bold px-8 py-2 rounded-full hover:brightness-110 active:scale-95 transition uppercase text-sm">Synthesize</button>
+                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase text-sm shadow-lg shadow-orange-500/20">Synthesize</button>
                 </div>
             </div>
-            <div class="bento p-6 flex flex-col justify-around">
-                <button onclick="set('Technical: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Tech</button>
-                <button onclick="set('Marketing: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Market</button>
-                <button onclick="set('Strategy: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Logic</button>
+
+            <div class="bento p-6 flex flex-col justify-between">
+                <span class="text-[10px] uppercase opacity-50 mb-4">Quick Macros</span>
+                <div class="space-y-4">
+                    <button onclick="quickSet('Technical Analysis: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Technical</button>
+                    <button onclick="quickSet('Creative Content: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Creative</button>
+                    <button onclick="quickSet('Logic Strategy: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Strategic</button>
+                </div>
             </div>
+        </section>
+
+        <div id="rc" class="hidden bento p-8 border-l-4 border-l-[#FF4F00] mb-12 bg-black/30">
+            <div class="flex justify-between items-center mb-6">
+                <span class="orange-text text-[10px] font-bold tracking-[0.3em]">SYNTHESIS_COMPLETE.LOG</span>
+                <button onclick="copyToClipboard()" id="cb" class="text-[10px] bg-white/10 px-4 py-1 rounded hover:bg-white/20 transition">COPY_DATA</button>
+            </div>
+            <pre id="out" class="text-white text-sm leading-relaxed whitespace-pre-wrap font-sans"></pre>
         </div>
 
-        <div id="rc" class="hidden bento p-6 border-l-4 border-l-[#FF4F00] mb-8 bg-black/20">
-            <div class="flex justify-between items-center mb-4">
-                <span class="orange-text text-[10px] font-bold">SYNTHESIS_LOG</span>
-                <button onclick="copy()" id="cb" class="text-[10px] bg-white/10 px-3 py-1 rounded">COPY</button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 pt-10 border-t border-slate-900">
+            <div class="p-2">
+                <p class="orange-text font-bold text-lg mb-1">01.</p>
+                <p class="text-white text-[10px] font-bold uppercase mb-2">Initialize</p>
+                <p class="text-slate-500 text-xs">Enter your raw request. The engine processes best with clear goals.</p>
             </div>
-            <pre id="out" class="text-white text-sm whitespace-pre-wrap"></pre>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 pt-8 border-t border-slate-900">
-            <div class="bento p-4">
-                <p class="orange-text font-bold">01. INPUT</p>
-                <p class="text-[10px] mt-1 text-slate-400">Type your basic request into the box above.</p>
+            <div class="p-2">
+                <p class="orange-text font-bold text-lg mb-1">02.</p>
+                <p class="text-white text-[10px] font-bold uppercase mb-2">Process</p>
+                <p class="text-slate-500 text-xs">Our logic expands your request into a high-density AI instruction set.</p>
             </div>
-            <div class="bento p-4">
-                <p class="orange-text font-bold">02. PROCESS</p>
-                <p class="text-[10px] mt-1 text-slate-400">Click Synthesize to generate a high-end AI prompt.</p>
-            </div>
-            <div class="bento p-4">
-                <p class="orange-text font-bold">03. EXECUTE</p>
-                <p class="text-[10px] mt-1 text-slate-400">Copy the result and use it in ChatGPT or Claude.</p>
+            <div class="p-2">
+                <p class="p-2">
+                <p class="orange-text font-bold text-lg mb-1">03.</p>
+                <p class="text-white text-[10px] font-bold uppercase mb-2">Deploy</p>
+                <p class="text-slate-500 text-xs">Paste the log into ChatGPT or Claude for immediate professional results.</p>
             </div>
         </div>
 
         <div class="mb-20">
-            <h3 class="text-white text-[10px] uppercase mb-4 opacity-50 tracking-widest">History Logs</h3>
-            <div id="hist" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            <h3 class="text-white text-[10px] font-bold uppercase mb-6 tracking-[0.5em] opacity-30">Archive Logs</h3>
+            <div id="hist" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
-    </main>
+
+        <footer class="text-center pb-20 opacity-30">
+            <div class="flex justify-center gap-6 text-[9px] uppercase tracking-widest mb-4">
+                <a href="#" class="hover:text-[#FF4F00]">Privacy</a>
+                <a href="#" class="hover:text-[#FF4F00]">Terms</a>
+                <a href="#" class="hover:text-[#FF4F00]">Contact</a>
+            </div>
+            <p class="text-[8px] tracking-[0.5em]">INDUSTRIAL PROMPT SYSTEMS © 2026</p>
+        </footer>
+    </div>
 
     <script>
-        function set(v) { document.getElementById('ui').value = v; }
-
-        function run() {
-            const inputField = document.getElementById('ui');
-            const outputArea = document.getElementById('rc');
-            const outputText = document.getElementById('out');
-            
-            if(!inputField.value) return;
-
-            // Synthesis Logic
-            const result = `[ROLE]: Expert Strategist\n[TASK]: ${inputField.value}\n[FRAMEWORK]: High-Density Industrial Logic\n[INSTRUCTIONS]: 1. Analyze 2. Structure 3. Optimize.\n[STATUS]: Synthesis Complete.`;
-            
-            // Show the output box
-            outputArea.classList.remove('hidden');
-            outputText.innerText = result;
-
-            // Save to History
-            saveHistory(inputField.value, result);
+        // Ensure functions are loaded before calling
+        function quickSet(val) {
+            document.getElementById('ui').value = val;
+            document.getElementById('ui').focus();
         }
 
-        function saveHistory(q, p) {
+        function runSynthesis() {
+            const input = document.getElementById('ui').value;
+            if(!input) return;
+
+            const outputBox = document.getElementById('rc');
+            const outputText = document.getElementById('out');
+
+            // Generate the Expanded Prompt
+            const finalPrompt = `[IDENTITY]: Senior Industry Strategist\n[CONTEXT]: ${input}\n[TASK]: Execute high-density synthesis.\n[CONSTRAINTS]: 1. Professional Tone. 2. Markdown headers. 3. Actionable steps.\n[SYNTHESIS COMPLETE]`;
+
+            outputBox.classList.remove('hidden');
+            outputText.innerText = finalPrompt;
+
+            // Scroll to output
+            window.scrollTo({ top: outputBox.offsetTop - 50, behavior: 'smooth' });
+
+            // Save to History
+            saveToLogs(input, finalPrompt);
+        }
+
+        function saveToLogs(q, p) {
             let logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
             logs.unshift({q, p, id: Date.now()});
             localStorage.setItem('p-logs', JSON.stringify(logs.slice(0,4)));
-            loadHistory();
+            renderLogs();
         }
 
-        function loadHistory() {
+        function renderLogs() {
             const container = document.getElementById('hist');
             const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
+            
             if (logs.length === 0) {
-                container.innerHTML = '<p class="text-[9px] text-slate-800">[ NO_LOGS_FOUND ]</p>';
+                container.innerHTML = '<div class="col-span-2 py-10 border border-dashed border-slate-800 rounded-xl text-center"><p class="text-[9px] uppercase opacity-20 tracking-widest">No Recent Activity</p></div>';
                 return;
             }
+
             container.innerHTML = logs.map(l => `
-                <div class="bento p-3 cursor-pointer hover:bg-slate-800" onclick="set('${l.q}')">
-                    <p class="text-[8px] orange-text font-bold">${new Date(l.id).toLocaleTimeString()}</p>
-                    <p class="text-white text-[11px] truncate">${l.q}</p>
+                <div class="bento p-4 cursor-pointer hover:bg-slate-800 transition-colors" onclick="quickSet('${l.q.replace(/'/g, "\\'")}')">
+                    <p class="text-[8px] orange-text font-bold mb-1 uppercase">${new Date(l.id).toLocaleTimeString()}</p>
+                    <p class="text-white text-xs truncate font-bold">${l.q}</p>
                 </div>
             `).join('');
         }
 
-        function copy() {
-            const content = document.getElementById('out').innerText;
-            navigator.clipboard.writeText(content);
-            document.getElementById('cb').innerText = "DONE";
-            setTimeout(() => { document.getElementById('cb').innerText = "COPY"; }, 2000);
+        function copyToClipboard() {
+            const text = document.getElementById('out').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.getElementById('cb');
+            btn.innerText = "COPIED";
+            btn.classList.add('orange-text');
+            setTimeout(() => { 
+                btn.innerText = "COPY_DATA"; 
+                btn.classList.remove('orange-text');
+            }, 2000);
         }
+
+        // Initialize logs on load
+        window.onload = renderLogs;
     </script>
 </body>
 </html>
