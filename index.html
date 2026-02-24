@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROMPT ENGINE | INDUSTRIAL COMMAND</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; overflow-x: hidden; }
-        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.2); border-radius: 1rem; }
-        .orange-text { color: #FF4F00; }
-        .orange-bg { background-color: #FF4F00; }
-        .glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.3); }
-        pre { white-space: pre-wrap; word-wrap: break-word; }
-    </style>
+   <style>
+    body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; }
+    
+    /* The Official International Orange */
+    .orange-text { color: #FF4F00; }
+    .orange-bg { background-color: #FF4F00; }
+    
+    /* Aerospace Glow Effect */
+    .glow-orange { 
+        text-shadow: 0 0 15px rgba(255, 79, 0, 0.6); 
+    }
+    
+    .bento { 
+        background: #1F2833; 
+        border: 1px solid rgba(255, 79, 0, 0.2); 
+        border-radius: 1rem; 
+        transition: 0.3s ease;
+    }
+    
+    .bento:hover {
+        border-color: #FF4F00;
+        box-shadow: 0 0 20px rgba(255, 79, 0, 0.1);
+    }
+</style>
 </head>
 <body class="p-4 md:p-12">
 
