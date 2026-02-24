@@ -6,110 +6,112 @@
     <title>PROMPT ENGINE | COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; scroll-behavior: smooth; }
-        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.1); border-radius: 1.5rem; }
-        .glow { text-shadow: 0 0 15px rgba(255, 79, 0, 0.5); }
-        @keyframes scan { 0% { left: -40%; } 100% { left: 100%; } }
-        .scanner { position: absolute; height: 2px; width: 40%; background: #FF4F00; animation: scan 2s infinite linear; }
+        body { background-color: #0B0C10; color: #94a3b8; font-family: monospace; }
+        .bento { background: #1F2833; border: 1px solid rgba(255, 79, 0, 0.2); border-radius: 1rem; }
+        .orange-text { color: #FF4F00; }
+        .orange-bg { background-color: #FF4F00; }
     </style>
 </head>
-<body class="p-4 md:p-12 min-h-screen" onload="loadHistory()">
-
-    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-12">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-[#FF4F00] rounded flex items-center justify-center text-black font-bold text-xl">P</div>
-            <span class="text-white font-bold text-2xl uppercase">PROMPT<span class="text-[#FF4F00]">ENGINE</span></span>
-        </div>
-        <div class="text-[10px] border border-orange-500/30 px-3 py-1 rounded text-[#FF4F00] animate-pulse">SYSTEM: ACTIVE</div>
-    </nav>
+<body class="p-6 md:p-12" onload="loadHistory()">
 
     <main class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-            <h1 class="text-5xl font-bold text-white mb-4 glow uppercase">Command Center</h1>
-            <p class="text-slate-500 text-xs tracking-[0.4em]">v4.0.7 | INDUSTRIAL SYNTHESIS</p>
-        </div>
+        <header class="flex justify-between items-center mb-12">
+            <h1 class="text-white font-bold text-2xl tracking-tighter uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
+            <div class="text-[10px] border border-orange-500/50 px-2 py-1 orange-text">v4.0.9 ONLINE</div>
+        </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="md:col-span-2 bento p-8 shadow-2xl">
-                <textarea id="ui" placeholder="Initialize task..." class="w-full bg-transparent text-white text-2xl font-bold outline-none h-40 resize-none"></textarea>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="md:col-span-2 bento p-6">
+                <textarea id="ui" placeholder="Enter task here..." class="w-full bg-transparent text-white text-xl outline-none h-32 resize-none"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="run()" class="bg-[#FF4F00] text-black font-bold px-10 py-3 rounded-full hover:scale-105 transition uppercase text-sm">Synthesize</button>
+                    <button onclick="run()" class="orange-bg text-black font-bold px-8 py-2 rounded-full hover:brightness-110 active:scale-95 transition uppercase text-sm">Synthesize</button>
                 </div>
             </div>
-
-            <div class="bento p-6 flex flex-col justify-between">
-                <span class="text-[10px] text-slate-500 uppercase">Macros</span>
-                <div class="space-y-3">
-                    <button onclick="set('Tech Analysis: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Technical</button>
-                    <button onclick="set('Marketing: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Marketing</button>
-                    <button onclick="set('Strategy: ')" class="w-full py-3 border border-slate-800 rounded-xl text-[10px] hover:bg-[#FF4F00] hover:text-black transition uppercase">/Logic</button>
-                </div>
-            </div>
-
-            <div id="ld" class="hidden md:col-span-3 py-4 relative"><div class="h-[1px] bg-slate-800 w-full overflow-hidden relative"><div class="scanner"></div></div></div>
-
-            <div id="rc" class="hidden md:col-span-3 bento p-8 border-l-4 border-l-[#FF4F00]">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-[#FF4F00] text-[10px] font-bold uppercase">Synthesis_Output.log</span>
-                    <button onclick="copy()" id="cb" class="text-[10px] border border-white/10 px-4 py-1 rounded hover:bg-white/5">COPY_DATA</button>
-                </div>
-                <pre id="out" class="text-white text-sm whitespace-pre-wrap"></pre>
+            <div class="bento p-6 flex flex-col justify-around">
+                <button onclick="set('Technical: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Tech</button>
+                <button onclick="set('Marketing: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Market</button>
+                <button onclick="set('Strategy: ')" class="text-[10px] border border-slate-700 py-2 rounded hover:bg-white/5 uppercase">/Logic</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 pt-10 border-t border-slate-900">
-            <div class="bento p-6 border-slate-800 opacity-80">
-                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">01.</h3>
-                <p class="text-white font-bold text-[10px] uppercase mb-1">Initialize</p>
-                <p class="text-slate-500 text-[10px]">Enter your task or project idea into the primary source.</p>
+        <div id="rc" class="hidden bento p-6 border-l-4 border-l-[#FF4F00] mb-8 bg-black/20">
+            <div class="flex justify-between items-center mb-4">
+                <span class="orange-text text-[10px] font-bold">SYNTHESIS_LOG</span>
+                <button onclick="copy()" id="cb" class="text-[10px] bg-white/10 px-3 py-1 rounded">COPY</button>
             </div>
-            <div class="bento p-6 border-slate-800 opacity-80">
-                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">02.</h3>
-                <p class="text-white font-bold text-[10px] uppercase mb-1">Synthesize</p>
-                <p class="text-slate-500 text-[10px]">The engine wraps your input in a professional AI framework.</p>
+            <pre id="out" class="text-white text-sm whitespace-pre-wrap"></pre>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 pt-8 border-t border-slate-900">
+            <div class="bento p-4">
+                <p class="orange-text font-bold">01. INPUT</p>
+                <p class="text-[10px] mt-1 text-slate-400">Type your basic request into the box above.</p>
             </div>
-            <div class="bento p-6 border-slate-800 opacity-80">
-                <h3 class="text-[#FF4F00] font-bold text-xl mb-2">03.</h3>
-                <p class="text-white font-bold text-[10px] uppercase mb-1">Execute</p>
-                <p class="text-slate-500 text-[10px]">Copy the result and paste into your LLM of choice.</p>
+            <div class="bento p-4">
+                <p class="orange-text font-bold">02. PROCESS</p>
+                <p class="text-[10px] mt-1 text-slate-400">Click Synthesize to generate a high-end AI prompt.</p>
+            </div>
+            <div class="bento p-4">
+                <p class="orange-text font-bold">03. EXECUTE</p>
+                <p class="text-[10px] mt-1 text-slate-400">Copy the result and use it in ChatGPT or Claude.</p>
             </div>
         </div>
 
         <div class="mb-20">
-            <h2 class="text-white font-bold text-[10px] uppercase tracking-widest mb-6">Session Logs</h2>
-            <div id="hist" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <h3 class="text-white text-[10px] uppercase mb-4 opacity-50 tracking-widest">History Logs</h3>
+            <div id="hist" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
         </div>
-
-        <footer class="text-center pb-20 opacity-30">
-            <p class="text-[9px] uppercase tracking-widest">ChatGPT Strategy • AI Prompt Tool • Professional Synthesis</p>
-            <p class="text-[8px] mt-2">© 2026 INDUSTRIAL SYSTEMS</p>
-        </footer>
     </main>
 
     <script>
         function set(v) { document.getElementById('ui').value = v; }
+
         function run() {
-            const val = document.getElementById('ui').value;
-            if(!val) return;
-            document.getElementById('ld').classList.remove('hidden');
-            document.getElementById('rc').classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('ld').classList.add('hidden');
-                document.getElementById('rc').classList.remove('hidden');
-                const res = `[IDENTITY]: Senior Expert\n[CONTEXT]: ${val}\n[TASK]: Strategic Synthesis\n[LOGIC]: High-density framework initialized.\n[SYNTHESIS COMPLETE]`;
-                document.getElementById('out').innerText = res;
-                save(val, res);
-                window.scrollTo({ top: document.getElementById('rc').offsetTop - 50, behavior: 'smooth' });
-            }, 1000);
+            const inputField = document.getElementById('ui');
+            const outputArea = document.getElementById('rc');
+            const outputText = document.getElementById('out');
+            
+            if(!inputField.value) return;
+
+            // Synthesis Logic
+            const result = `[ROLE]: Expert Strategist\n[TASK]: ${inputField.value}\n[FRAMEWORK]: High-Density Industrial Logic\n[INSTRUCTIONS]: 1. Analyze 2. Structure 3. Optimize.\n[STATUS]: Synthesis Complete.`;
+            
+            // Show the output box
+            outputArea.classList.remove('hidden');
+            outputText.innerText = result;
+
+            // Save to History
+            saveHistory(inputField.value, result);
         }
-        function save(q, p) {
+
+        function saveHistory(q, p) {
             let logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
             logs.unshift({q, p, id: Date.now()});
             localStorage.setItem('p-logs', JSON.stringify(logs.slice(0,4)));
             loadHistory();
         }
+
         function loadHistory() {
-            const h = document.getElementById('hist');
+            const container = document.getElementById('hist');
             const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
             if (logs.length === 0) {
-                h.innerHTML = `<p class="text-[10px] text-slate-800 uppercase">[ LOG_EMPTY ]</
+                container.innerHTML = '<p class="text-[9px] text-slate-800">[ NO_LOGS_FOUND ]</p>';
+                return;
+            }
+            container.innerHTML = logs.map(l => `
+                <div class="bento p-3 cursor-pointer hover:bg-slate-800" onclick="set('${l.q}')">
+                    <p class="text-[8px] orange-text font-bold">${new Date(l.id).toLocaleTimeString()}</p>
+                    <p class="text-white text-[11px] truncate">${l.q}</p>
+                </div>
+            `).join('');
+        }
+
+        function copy() {
+            const content = document.getElementById('out').innerText;
+            navigator.clipboard.writeText(content);
+            document.getElementById('cb').innerText = "DONE";
+            setTimeout(() => { document.getElementById('cb').innerText = "COPY"; }, 2000);
+        }
+    </script>
+</body>
+</html>
