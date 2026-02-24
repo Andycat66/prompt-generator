@@ -11,6 +11,7 @@
         .orange-text { color: #FF4F00; }
         .orange-bg { background-color: #FF4F00; }
         .glow { text-shadow: 0 0 10px rgba(255, 79, 0, 0.3); }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
     </style>
 </head>
 <body class="p-4 md:p-12">
@@ -18,52 +19,51 @@
     <div class="max-w-4xl mx-auto">
         <nav class="flex justify-between items-center mb-12">
             <h1 class="text-white font-bold text-2xl tracking-tighter glow uppercase">PROMPT<span class="orange-text">ENGINE</span></h1>
-            <div class="text-[10px] border border-orange-500/40 px-3 py-1 orange-text font-bold">CORE_V4.1.0_STABLE</div>
+            <div class="text-[10px] border border-orange-500/40 px-3 py-1 orange-text font-bold tracking-widest">CORE_V4.2.0_PROMPT_READY</div>
         </nav>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="md:col-span-2 bento p-6">
-                <label class="block text-[10px] uppercase mb-2 opacity-50">User Input Source</label>
-                <textarea id="ui" placeholder="Initialize task parameters (e.g. 'Marketing plan for coffee shop')..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
+            <div class="md:col-span-2 bento p-6 shadow-2xl">
+                <label class="block text-[10px] uppercase mb-2 opacity-50 tracking-widest">Input Parameters</label>
+                <textarea id="ui" placeholder="e.g. 'contact form for a real estate site'..." class="w-full bg-transparent text-white text-xl outline-none h-40 resize-none placeholder:opacity-20"></textarea>
                 <div class="flex justify-end mt-4">
-                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase text-sm shadow-lg shadow-orange-500/20">Synthesize</button>
+                    <button onclick="runSynthesis()" class="orange-bg text-black font-bold px-10 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase text-sm">Synthesize Prompt</button>
                 </div>
             </div>
 
             <div class="bento p-6 flex flex-col justify-between">
-                <span class="text-[10px] uppercase opacity-50 mb-4">Quick Macros</span>
+                <span class="text-[10px] uppercase opacity-50 mb-4">Quick Presets</span>
                 <div class="space-y-4">
                     <button onclick="quickSet('Technical Analysis: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Technical</button>
-                    <button onclick="quickSet('Creative Content: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Creative</button>
-                    <button onclick="quickSet('Logic Strategy: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Strategic</button>
+                    <button onclick="quickSet('Marketing Strategy: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Marketing</button>
+                    <button onclick="quickSet('Python Script: ')" class="w-full py-3 border border-slate-700 rounded-lg text-[10px] hover:bg-white/5 transition uppercase tracking-widest">/Code_Logic</button>
                 </div>
             </div>
         </section>
 
-        <div id="rc" class="hidden bento p-8 border-l-4 border-l-[#FF4F00] mb-12 bg-black/30">
-            <div class="flex justify-between items-center mb-6">
-                <span class="orange-text text-[10px] font-bold tracking-[0.3em]">SYNTHESIS_COMPLETE.LOG</span>
-                <button onclick="copyToClipboard()" id="cb" class="text-[10px] bg-white/10 px-4 py-1 rounded hover:bg-white/20 transition">COPY_DATA</button>
+        <div id="rc" class="hidden bento p-8 border-l-4 border-l-[#FF4F00] mb-12 bg-black/40">
+            <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                <span class="orange-text text-[10px] font-bold tracking-[0.3em]">PROMPT_READY_FOR_DEPLOYMENT</span>
+                <button onclick="copyToClipboard()" id="cb" class="text-[10px] bg-white/10 px-4 py-1 rounded hover:bg-white/20 transition uppercase">Copy Prompt</button>
             </div>
-            <pre id="out" class="text-white text-sm leading-relaxed whitespace-pre-wrap font-sans"></pre>
+            <pre id="out" class="text-white text-sm leading-relaxed font-sans"></pre>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 pt-10 border-t border-slate-900">
             <div class="p-2">
                 <p class="orange-text font-bold text-lg mb-1">01.</p>
                 <p class="text-white text-[10px] font-bold uppercase mb-2">Initialize</p>
-                <p class="text-slate-500 text-xs">Enter your raw request. The engine processes best with clear goals.</p>
+                <p class="text-slate-500 text-xs">Enter a simple topic. Our engine builds the expert persona for you.</p>
             </div>
             <div class="p-2">
                 <p class="orange-text font-bold text-lg mb-1">02.</p>
-                <p class="text-white text-[10px] font-bold uppercase mb-2">Process</p>
-                <p class="text-slate-500 text-xs">Our logic expands your request into a high-density AI instruction set.</p>
+                <p class="text-white text-[10px] font-bold uppercase mb-2">Synthesize</p>
+                <p class="text-slate-500 text-xs">We wrap your idea in constraints, roles, and output requirements.</p>
             </div>
             <div class="p-2">
-                <p class="p-2">
                 <p class="orange-text font-bold text-lg mb-1">03.</p>
-                <p class="text-white text-[10px] font-bold uppercase mb-2">Deploy</p>
-                <p class="text-slate-500 text-xs">Paste the log into ChatGPT or Claude for immediate professional results.</p>
+                <p class="text-white text-[10px] font-bold uppercase mb-2">Execute</p>
+                <p class="text-slate-500 text-xs">Copy the code block and paste it into ChatGPT, Claude, or Gemini.</p>
             </div>
         </div>
 
@@ -83,30 +83,44 @@
     </div>
 
     <script>
-        // Ensure functions are loaded before calling
         function quickSet(val) {
             document.getElementById('ui').value = val;
             document.getElementById('ui').focus();
         }
 
         function runSynthesis() {
-            const input = document.getElementById('ui').value;
-            if(!input) return;
+            const inputVal = document.getElementById('ui').value;
+            if(!inputVal) return;
 
             const outputBox = document.getElementById('rc');
             const outputText = document.getElementById('out');
 
-            // Generate the Expanded Prompt
-            const finalPrompt = `[IDENTITY]: Senior Industry Strategist\n[CONTEXT]: ${input}\n[TASK]: Execute high-density synthesis.\n[CONSTRAINTS]: 1. Professional Tone. 2. Markdown headers. 3. Actionable steps.\n[SYNTHESIS COMPLETE]`;
+            // THE REAL PROMPT GENERATION LOGIC
+            const expandedPrompt = `Act as an expert Consultant specializing in ${inputVal}. 
+
+[TASK]: Your primary objective is to provide a comprehensive, high-performance solution for: ${inputVal}.
+
+[INSTRUCTIONS]:
+1. Adopt a professional, authoritative persona.
+2. Break the solution down into: Strategic Overview, Technical Requirements, and Execution Steps.
+3. Identify potential risks or edge cases the user might have missed.
+4. Ensure all code or logic provided follows industry best practices.
+
+[CONSTRAINTS]:
+- Provide high-density information; avoid fluff or filler text.
+- Use Markdown headers for clear organization.
+- If the task is technical, provide clean, commented code snippets.
+
+[OUTPUT]: Begin with a deep dive into the requirements for ${inputVal} and proceed with the full solution.`;
 
             outputBox.classList.remove('hidden');
-            outputText.innerText = finalPrompt;
+            outputText.innerText = expandedPrompt;
 
-            // Scroll to output
+            // Scroll to the new prompt
             window.scrollTo({ top: outputBox.offsetTop - 50, behavior: 'smooth' });
 
-            // Save to History
-            saveToLogs(input, finalPrompt);
+            // Save to Local History
+            saveToLogs(inputVal, expandedPrompt);
         }
 
         function saveToLogs(q, p) {
@@ -121,7 +135,7 @@
             const logs = JSON.parse(localStorage.getItem('p-logs') || '[]');
             
             if (logs.length === 0) {
-                container.innerHTML = '<div class="col-span-2 py-10 border border-dashed border-slate-800 rounded-xl text-center"><p class="text-[9px] uppercase opacity-20 tracking-widest">No Recent Activity</p></div>';
+                container.innerHTML = '<div class="col-span-2 py-10 border border-dashed border-slate-800 rounded-xl text-center"><p class="text-[9px] uppercase opacity-20 tracking-widest">No Recent Logs</p></div>';
                 return;
             }
 
@@ -137,15 +151,10 @@
             const text = document.getElementById('out').innerText;
             navigator.clipboard.writeText(text);
             const btn = document.getElementById('cb');
-            btn.innerText = "COPIED";
-            btn.classList.add('orange-text');
-            setTimeout(() => { 
-                btn.innerText = "COPY_DATA"; 
-                btn.classList.remove('orange-text');
-            }, 2000);
+            btn.innerText = "COPIED!";
+            setTimeout(() => { btn.innerText = "COPY PROMPT"; }, 2000);
         }
 
-        // Initialize logs on load
         window.onload = renderLogs;
     </script>
 </body>
